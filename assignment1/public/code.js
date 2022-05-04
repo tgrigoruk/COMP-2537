@@ -1,7 +1,7 @@
 main_html = "";
 
 function loadDropdowns() {
-  ["type", "nature", "location"].forEach((searchType) => {
+  ["type", "ability", "location"].forEach((searchType) => {
     $.ajax({
       type: "GET",
       url: `https://pokeapi.co/api/v2/${searchType}/`,
@@ -16,46 +16,68 @@ function loadDropdowns() {
   });
 }
 
-function processPokeRes(data) {
+function makePokemonCard(pokemon) {
   //   console.log(data);
-  pokemonName = data.name[0].toUpperCase() + data.name.slice(1);
-  main_html += `<div class="pokemon_card">
-    <h2 class="pokemon_title">${pokemonName}</h2>
-    <a href="/profile/${data.id}"> 
-    <div class="image_container">
-    <img src="${data.sprites.other["official-artwork"].front_default}">
-    </a>
-    </div>
+  pokemonName = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+  return `
+    <div class="pokemon_card">
+        <h3 class="pokemon_id">#${pokemon.id}</h3>
+        <a href="/profile/${pokemon.id}"> 
+        <div class="image_container">
+            <img src="${pokemon.sprites.other["official-artwork"].front_default}">
+            
+        </div>
+        </a>
+        <h2 class="pokemon_title">${pokemonName}</h2>
     </div>`;
 }
 
-async function loadPokemonCards() {
-  for (i = 1; i <= 9; i++) {
-    if (i % 3 == 1) {
-      main_html += `<div class="images_group">`;
-    }
+pokemonSearchList = [];
+async function searchPokemons(searchUrl) {
+  await $.ajax({
+    type: "GET",
+    url: searchUrl,
+    success: (data) => {
+      pokemonSearchList = data.pokemon.map((pokemon) => {
+        return pokemon.pokemon.name;
+      });
+      console.log(pokemonSearchList);
+      loadPokemonCards(pokemonSearchList);
+    },
+  });
+}
 
-    index = Math.floor(Math.random() * 900) + 1;
+async function loadPokemonCards(pokemonIdList) {
+  main_html = "";
+  for (i = 0; i < 9; i++) {
+    // 0, 3, 6
+    if (i % 3 == 0) main_html += `<div class="images_group">`;
 
     await $.ajax({
       type: "GET",
-      url: "https://pokeapi.co/api/v2/pokemon/" + index,
-      success: processPokeRes,
+      url: "https://pokeapi.co/api/v2/pokemon/" + pokemonIdList[i],
+      success: (pokemon) => {
+        main_html += makePokemonCard(pokemon);
+      },
     });
 
-    if (i % 3 == 0) {
-      main_html += `</div>`;
-    }
+    if (i % 3 == 2) main_html += `</div>`;
   }
   $("main").html(main_html);
 }
 
+function randomPokemons(number) {
+  randomArr = [];
+  for (i = 0; i < number; i++) {
+    randomArr.push(Math.floor(Math.random() * 900) + 1);
+  }
+  return randomArr;
+}
 function setup() {
   loadDropdowns();
-  loadPokemonCards();
-  $("#pokemon_type").change(() => {
-    pokemon_type = $("#pokemon_type option:selected").val();
-    alert(pokemon_type);
+  loadPokemonCards(randomPokemons(9));
+  $("select").change(function () {
+    searchPokemons(this.value);
   });
 }
 
