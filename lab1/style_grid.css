@@ -4,6 +4,10 @@
   margin: 0px;
 }
 
+img {
+  width: 100%;
+}
+
 main {
   margin: 10px;
 }
@@ -45,9 +49,10 @@ nav a:hover {
 }
 
 
-.grid-container {
+#grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
 }
 
 .image-container img {
