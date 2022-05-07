@@ -32,16 +32,20 @@ function extractPokemonData(data) {
   data = JSON.parse(data);
   stats = Object.assign(
     {},
+    { base_xp: data.base_experience },
     ...data.stats.map((stat) => ({
       [stat.stat.name]: stat.base_stat,
     }))
   );
+  abilities = data.abilities.map((ability) => {
+    return ability.ability.name;
+  });
   pokemonData = {
-    name: data.name,
+    name: data.name[0].toUpperCase() + data.name.slice(1),
     img: data.sprites.other["official-artwork"].front_default,
-    base_xp: data.base_experience,
     stats: stats,
+    abilities: abilities,
   };
-  console.log(pokemonData);
+  // console.log(pokemonData);
   return pokemonData;
 }
