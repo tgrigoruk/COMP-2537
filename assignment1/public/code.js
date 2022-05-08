@@ -1,7 +1,7 @@
 main_html = "";
 
 function loadDropdowns() {
-  ["type", "ability", "location"].forEach((searchType) => {
+  ["type", "ability", "pokemon-color"].forEach((searchType) => {
     $.ajax({
       type: "GET",
       url: `https://pokeapi.co/api/v2/${searchType}/`,
@@ -10,6 +10,7 @@ function loadDropdowns() {
         data.results.forEach((result) => {
           options += `<option value=${result.url}>${result.name}</option>`;
         });
+        if (searchType == "pokemon-color") searchType = "color";
         $(`#pokemon_${searchType}`).html(options);
       },
     });
@@ -21,14 +22,13 @@ function makePokemonCard(pokemon) {
   pokemonName = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
   return `
     <div class="pokemon_card">
-        <h3 class="pokemon_id">#${pokemon.id}</h3>
-        <a href="/profile/${pokemon.id}"> 
-        <div class="image_container">
-            <img src="${pokemon.sprites.other["official-artwork"].front_default}">
-            
-        </div>
-        </a>
-        <h2 class="pokemon_title">${pokemonName}</h2>
+      <a href="/profile/${pokemon.id}"> 
+      <h3 class="pokemon_id">#${pokemon.id}</h3>
+      <div class="image_container">
+          <img src="${pokemon.sprites.other["official-artwork"].front_default}">
+      </div>
+      <h2 class="pokemon_title">${pokemonName}</h2>
+      </a>
     </div>`;
 }
 
@@ -38,13 +38,43 @@ async function searchPokemons(searchUrl) {
     type: "GET",
     url: searchUrl,
     success: (data) => {
-      pokemonSearchList = data.pokemon.map((pokemon) => {
-        return pokemon.pokemon.name;
-      });
+      if (searchUrl.includes("pokemon-color")) {
+        pokemonSearchList = data.pokemon_species.map((pokemon) => {
+          return pokemon.name;
+        });
+      } else {
+        pokemonSearchList = data.pokemon.map((pokemon) => {
+          return pokemon.pokemon.name;
+        });
+      }
       console.log(pokemonSearchList);
       loadPokemonCards(pokemonSearchList);
     },
   });
+}
+
+function searchPokemonByName(keypress) {
+  if (keypress.keyCode == 13) {
+    pokemonName = $(this).val().toLowerCase();
+    if (/[^a-z]/i.test(pokemonName)) {
+      alert("Invalid name entered - must contain only letters.");
+    } else {
+      $.ajax({
+        type: "GET",
+        url: `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
+        error: () => {
+          alert("A pokemon by that name does not exist.");
+        },
+        success: (data) => {
+          window.location.href = `/profile/${data.id}`;
+          // $.ajax({
+          //   url: "/profile/:" + data.id,
+          //   type: "GET",
+          // });
+        },
+      });
+    }
+  }
 }
 
 async function loadPokemonCards(pokemonIdList) {
@@ -79,6 +109,7 @@ function setup() {
   $("select").change(function () {
     searchPokemons(this.value);
   });
+  $("#pokemon_name").on("keydown", searchPokemonByName);
 }
 
 $(document).ready(setup);
