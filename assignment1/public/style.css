@@ -36,6 +36,13 @@ header {
     background-color: hsl(60, 100%, 88%);
 }
 
+main {
+    /* margin: 1vw; */
+    padding: 15px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
 #search {
     padding: 0.25em;
     background-color: hsl(60, 56%, 80%);
@@ -45,9 +52,9 @@ header {
 }
 
 .search-group {
-    margin: 10px;
-    padding: 1em;
-    border-radius: 10px;
+    margin: 0.5em;
+    padding: 0.5em;
+    border-radius: 12px;
     background-color: beige;
     display: flex;
     flex-direction: column;
@@ -62,13 +69,14 @@ label {
     text-align: center;
 }
 
-main {
-    /* margin: 1vw; */
-    display: flex;
-    justify-content: space-evenly;
+#search_history {
+    width: 100px;
 }
 
 /*** index.html ***/
+#pokemon_name {
+    width: 130px;
+}
 
 .images_group {
     display: flex;
