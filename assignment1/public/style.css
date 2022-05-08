@@ -7,25 +7,38 @@ body {
     background-color: hsl(167, 100%, 95%);
 }
 
+/* body,
+html {
+    height: 100%;
+} */
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+    display: block;
+    height: max-content;
+}
+
 h1 {
-    padding: 0.25em;
-    font-size: 6vw;
+    /* padding: 5px; */
+    font-size: 36px;
     font-style: italic;
 }
 
 h1,
 h2 {
+    font-size: 20;
     font-family: 'Coiny', cursive;
     text-align: center;
 }
 
-label {
-    margin: 0.25em;
-    font-family: 'Press Start 2P', cursive;
-    text-align: center;
+header {
+    background-color: hsl(60, 100%, 88%);
 }
 
 #search {
+    padding: 0.25em;
+    background-color: hsl(60, 56%, 80%);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -41,12 +54,16 @@ label {
 }
 
 label {
+    margin: 0.25em;
+    font-size: 12px;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
     display: block;
     text-align: center;
 }
 
 main {
-    margin: 1vw;
+    /* margin: 1vw; */
     display: flex;
     justify-content: space-evenly;
 }
@@ -96,19 +113,21 @@ img {
 /*** profile.ejs ***/
 
 #left {
-    width: 40%;
+    width: 33%;
 }
 
 #right {
-    width: 60%;
+    width: 66%;
 }
 
 #left,
 #right {
+    margin: 50px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
+    /* gap: 20px; */
 }
 
 #main-img {
@@ -139,9 +158,10 @@ progress {
     width: 80%;
     height: 1.5em;
     align-self: center;
+
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
 
     main,
     #search {
