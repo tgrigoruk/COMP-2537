@@ -19,28 +19,25 @@
   <body>
     <header>
       <h1>Pokedex!</h1>
+      <div id="search">
+        <div class="search-group">
+          <label for="pokemon_type">TYPE</label>
+          <select name="pokemon_type" id="pokemon_type"></select>
+        </div>
+        <div class="search-group">
+          <label for="pokemon_ability">ABILITY</label>
+          <select name="pokemon_ability" id="pokemon_ability"></select>
+        </div>
+        <div class="search-group">
+          <label for="pokemon_color">COLOR</label>
+          <select name="pokemon_color" id="pokemon_color"></select>
+        </div>
+        <div class="search-group">
+          <label for="pokemon_name">NAME</label>
+          <input type="text" id="pokemon_name" />
+        </div>
+      </div>
     </header>
-    <div id="search">
-      <!-- ability  -->
-      <!-- gender radio btns: M/F/BOTH -->
-      <div class="search-group">
-        <label for="pokemon_type">TYPE</label>
-        <select name="pokemon_type" id="pokemon_type"></select>
-      </div>
-      <div class="search-group">
-        <label for="pokemon_ability">ABILITY</label>
-        <select name="pokemon_ability" id="pokemon_ability"></select>
-      </div>
-      <div class="search-group">
-        <label for="pokemon_location">LOCATION</label>
-        <select name="pokemon_location" id="pokemon_location"></select>
-      </div>
-      <div class="search-group">
-        <label for="pokemon_name">NAME</label>
-        <!-- need form validation  -->
-        <input type="text" id="pokemon_name" />
-      </div>
-    </div>
     <main>
       <!-- pokemon cards  -->
     </main>
