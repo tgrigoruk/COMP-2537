@@ -28,14 +28,14 @@ h3 {
 }
 
 h1 {
-    font-size: 42px;
+    font-size: clamp(32px, 6vw, 48px);
 }
 
 h2 {
-    font-size: 38px;
+    font-size: clamp(24px, 3vw, 40px);
 }
 
-h3 {
+` h3 {
     font-size: 24px;
 }
 
@@ -115,9 +115,6 @@ label {
 }
 
 /*** index.html ***/
-#pokemon_name {
-    width: 120px;
-}
 
 .images_group {
     display: flex;
@@ -234,7 +231,7 @@ progress {
     border-radius: 8px;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 840px) {
 
     main,
     #search {

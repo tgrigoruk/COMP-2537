@@ -49,6 +49,7 @@ async function searchPokemons(searchUrl) {
       }
       console.log(pokemonSearchList);
       loadPokemonCards(pokemonSearchList);
+      createButtons(pokemonSearchList);
     },
   });
 }
@@ -67,10 +68,6 @@ function searchPokemonByName(keypress) {
         },
         success: (data) => {
           window.location.href = `/profile/${data.id}`;
-          // $.ajax({
-          //   url: "/profile/:" + data.id,
-          //   type: "GET",
-          // });
         },
       });
     }
@@ -96,6 +93,13 @@ async function loadPokemonCards(pokemonIdList) {
   $("main").html(main_html);
 }
 
+function changePage() {
+  buttonPressed = $(this).val();
+}
+function createButtons(pokemonList) {
+  pageCount = Math.floor(pokemonList.length / 9) + 1;
+}
+
 function randomPokemons(number) {
   randomArr = [];
   for (i = 0; i < number; i++) {
@@ -103,6 +107,7 @@ function randomPokemons(number) {
   }
   return randomArr;
 }
+
 function setup() {
   loadDropdowns();
   loadPokemonCards(randomPokemons(9));
@@ -110,6 +115,7 @@ function setup() {
     searchPokemons(this.value);
   });
   $("#pokemon_name").on("keydown", searchPokemonByName);
+  $("button").on("click", changePage);
 }
 
 $(document).ready(setup);
