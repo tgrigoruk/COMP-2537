@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     margin: 0;
+    font-family: monospace;
 }
 
 body {
@@ -19,25 +20,65 @@ a {
     height: max-content;
 }
 
-h1 {
-    /* padding: 5px; */
-    font-size: 36px;
-    font-style: italic;
-}
-
 h1,
-h2 {
-    font-size: 20;
+h2,
+h3 {
     font-family: 'Coiny', cursive;
     text-align: center;
 }
 
+h1 {
+    font-size: 42px;
+}
+
+h2 {
+    font-size: 38px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
 header {
-    background-color: hsl(60, 100%, 88%);
+    background-color: hsl(60, 100%, 90%);
+}
+
+#footer-text {
+    color: hsl(194, 57%, 70%);
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+}
+
+nav {
+    background-color: hsl(194, 57%, 80%);
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+#nav-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+nav a {
+    font-size: 12px;
+    font-family: 'Press Start 2P', monospace;
+    background-color: none;
+    border-radius: 10px;
+    text-decoration: none;
+    display: block;
+    padding: 0.75em 1em;
+    margin: 0.75em;
+    text-align: center;
+}
+
+nav a:hover {
+    background-color: hsl(194, 70%, 85%);
 }
 
 main {
-    /* margin: 1vw; */
     padding: 15px;
     display: flex;
     justify-content: space-evenly;
@@ -53,7 +94,7 @@ main {
 
 .search-group {
     margin: 0.5em;
-    padding: 0.5em;
+    padding: 0.5em 0.7em;
     border-radius: 12px;
     background-color: beige;
     display: flex;
@@ -62,8 +103,8 @@ main {
 
 label {
     margin: 0.25em;
-    font-size: 12px;
-    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    font-family: 'Press Start 2P', monospace;
     text-align: center;
     display: block;
     text-align: center;
@@ -75,7 +116,7 @@ label {
 
 /*** index.html ***/
 #pokemon_name {
-    width: 130px;
+    width: 120px;
 }
 
 .images_group {
@@ -83,14 +124,13 @@ label {
     flex-direction: column;
 }
 
-.pokemon_card,
-#stats {
+.pokemon_card {
     /* width: 100%; */
     margin: 1.25em;
     border: 1px solid hsl(0, 0%, 20%);
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 4px 6px 8px gray;
-    background-image: linear-gradient(hsl(210, 100%, 95%), hsl(277, 100%, 95%));
+    background-image: linear-gradient(hsl(210, 100%, 93%), hsl(277, 100%, 93%));
     /* display: flex;
     flex-direction: column;
     justify-content: center; */
@@ -102,7 +142,6 @@ label {
 }
 
 .pokemon_title {
-    font-size: 24px;
     margin: 1em;
     text-shadow: 2px 2px 2px white;
 }
@@ -115,17 +154,25 @@ label {
 }
 
 img {
-    width: 60%;
+    width: 80%;
 }
 
 /*** profile.ejs ***/
 
 #left {
     width: 33%;
+    justify-content: flex-start;
 }
 
 #right {
     width: 66%;
+    margin: 1.25em;
+    padding: 1.25em;
+    border: 1.5px solid hsl(0, 0%, 40%);
+    border-radius: 20px;
+    box-shadow: 4px 6px 8px gray;
+    background-image: linear-gradient(hsl(29, 100%, 92%), hsl(228, 100%, 92%));
+    justify-content: center;
 }
 
 #left,
@@ -133,7 +180,6 @@ img {
     margin: 50px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-content: center;
     /* gap: 20px; */
 }
@@ -145,9 +191,15 @@ img {
 }
 
 #stats {
-    height: 80%;
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(2, 1fr);
+}
+
+#stats,
+#abilities {
+    /* margin: 1.25em; */
+    border-radius: 10px;
+    background-color: hsla(180, 0%, 100%, 0.35);
 }
 
 .stat {
@@ -166,10 +218,23 @@ progress {
     width: 80%;
     height: 1.5em;
     align-self: center;
+    accent-color: hsl(180, 80%, 45%);
+}
+
+#abilities {
+    display: flex;
 
 }
 
-@media screen and (max-width: 700px) {
+.ability {
+    margin: 0.5em;
+    padding: 0.25em 0.5em;
+    font-size: 16px;
+    background-color: hsl(180, 80%, 45%, 50%);
+    border-radius: 8px;
+}
+
+@media screen and (max-width: 800px) {
 
     main,
     #search {
