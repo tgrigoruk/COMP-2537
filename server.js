@@ -5,6 +5,21 @@ app.set("view engine", "ejs");
 
 const https = require("https");
 
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://tgrigoruk:comp1537@cluster0.zvy6j.mongodb.net/A3?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+const pokemonSchema = new mongoose.Schema({
+  name: String,
+  type: Number,
+  abilities: [String],
+});
+const pokemonModel = mongoose.model("pokemons", pokemonSchema);
+
 app.listen(process.env.PORT || 5001, function (err) {
   if (err) console.log(err);
 });
