@@ -3,28 +3,12 @@ const app = express();
 app.use(express.static("./public"));
 app.set("view engine", "ejs");
 
-const https = require("https");
-
-const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://tgrigoruk:comp1537@cluster0.zvy6j.mongodb.net/A3?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
-const pokemonSchema = new mongoose.Schema({
-  name: String,
-  type: Number,
-  abilities: [String],
-});
-const pokemonModel = mongoose.model("pokemons", pokemonSchema);
-
-app.listen(process.env.PORT || 5001, function (err) {
+// for heroku prepend port number with:    process.env.PORT ||
+app.listen(5001, function (err) {
   if (err) console.log(err);
 });
 
-// https://pokeapi.co/
+//---------- ROUTES ---------//
 
 app.get("/", function (req, res) {
   res.send("<h1>GET request to homepage</h1>");
