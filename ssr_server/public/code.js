@@ -49,8 +49,8 @@ async function loadDropdowns() {
       type: "GET",
       url: pokeapiUrl + searchTypes[i],
       success: (data) => {
-        console.log(searchTypes[i]);
-        console.log(data.results);
+        // console.log(searchTypes[i]);
+        // console.log(data.results);
         options = "";
         for (j = 0; j < data.results; j++) {
           options += `<option value=${data.results[j].url}>${data.results[j].name}</option>`;

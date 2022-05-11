@@ -64,14 +64,14 @@ function extractPokemonData(data) {
 }
 
 app.get("/timeline/getAllEvents", function (req, res) {
-  // console.log("received a request for "+ req.params.city_name);
+  console.log("received a request");
   eventModel.find({}, function (err, data) {
     if (err) {
       console.log("Error " + err);
     } else {
       console.log("Data " + data);
     }
-    res.send("Insertion is successful");
+    res.send(data);
   });
 });
 
