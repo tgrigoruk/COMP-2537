@@ -141,3 +141,20 @@ app.get("/timeline/remove/:id", function (req, res) {
     }
   );
 });
+
+app.get("/timeline/removeAll", function (req, res) {
+  // console.log(req.params)
+  eventModel.deleteMany(
+    {
+      _hits: { $gt: 0 },
+    },
+    function (err, data) {
+      if (err) {
+        console.log("Error " + err);
+      } else {
+        console.log("Deleted all");
+      }
+      res.send("Deleted all!");
+    }
+  );
+});
