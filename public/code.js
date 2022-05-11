@@ -86,7 +86,7 @@ function makePokemonCard(pokemon) {
   pokemonName = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
   return `
     <div class="pokemon_card">
-      <a href="/profile/${pokemon.id}"> 
+      <a href="/profile/${pokemon.id}" onclick="profileViewed('${pokemonName}')"> 
       <h3 class="pokemon_id">#${pokemon.id}</h3>
       <div class="image_container">
           <img src="${pokemon.sprites.other["official-artwork"].front_default}">
@@ -135,7 +135,7 @@ function setup() {
   loadPokemonCards([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   $("select").change(searchPokemons);
   $("#pokemon_name").on("keydown", searchPokemonByName);
-  // $("button").on("click", changePage);
+  // $(".page-button").on("click", changePage);
 }
 
 $(document).ready(setup);
