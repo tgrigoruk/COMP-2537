@@ -1,10 +1,18 @@
 const express = require("express");
-const fetch = import("node-fetch");
 const app = express();
 app.use(express.static("./public"));
 app.set("view engine", "ejs");
 const cors = require("cors");
 app.use(cors());
+
+const bodyparser = require("body-parser");
+app.use(
+  bodyparser.urlencoded({
+    parameterLimit: 100000,
+    limit: "50mb",
+    extended: true,
+  })
+);
 
 const https = require("https");
 const http = require("http");
@@ -28,13 +36,15 @@ app.listen(5001, function (err) {
 
 //---------- ROUTES ---------//
 
-// let pokeapiUrl = "https://pokeapi.co/api/v2/";
-let pokeapiUrl = "http://localhost:5002/";
+// pokeapiUrl =  "https://pokeapi.co/api/v2/";
+pokeapiUrl = "http://localhost:5002/";
+// pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
 
 app.get("/profile/:id", function (req, res) {
   const url = pokeapiUrl + `pokemon/${req.params.id}`;
   data = "";
 
+  // use http if local DB, otherwise use https
   http.get(url, function (https_res) {
     https_res.on("data", function (chunk) {
       data += chunk;
@@ -44,7 +54,6 @@ app.get("/profile/:id", function (req, res) {
     });
   });
 });
-
 function extractPokemonData(data) {
   data = JSON.parse(data);
   stats = Object.assign(
@@ -63,43 +72,41 @@ function extractPokemonData(data) {
     stats: stats,
     abilities: abilities,
   };
-  // console.log(pokemonData);
   return pokemonData;
 }
 
 app.get("/timeline/getAllEvents", function (req, res) {
-  console.log("received a request");
   eventModel.find({}, function (err, data) {
     if (err) {
       console.log("Error " + err);
     } else {
-      console.log("Data " + data);
+      // console.log("Data " + data);
     }
     res.send(data);
   });
 });
 
-app.put("/timeline/insert", function (req, res) {
-  console.log(req.body);
+app.post("/timeline/insert", function (req, res) {
+  console.log(req.body.text);
   eventModel.create(
     {
       text: req.body.text,
       time: req.body.time,
-      hits: req.body.hits,
+      hits: 1,
     },
     function (err, data) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Data " + data);
+        console.log("Inserted: \n" + data);
       }
       res.send(data);
     }
   );
 });
 
-app.get("/timeline/inreaseHits/:id", function (req, res) {
-  console.log(req.params);
+app.get("/timeline/like/:id", function (req, res) {
+  // console.log(req.params);
   eventModel.updateOne(
     {
       _id: req.params.id,
@@ -111,7 +118,7 @@ app.get("/timeline/inreaseHits/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Data " + data);
+        console.log("Liked: \n" + data);
       }
       res.send("Update is good!");
     }
@@ -120,7 +127,7 @@ app.get("/timeline/inreaseHits/:id", function (req, res) {
 
 app.get("/timeline/remove/:id", function (req, res) {
   // console.log(req.params)
-  eventModel.remove(
+  eventModel.deleteOne(
     {
       _id: req.params.id,
     },
@@ -128,7 +135,7 @@ app.get("/timeline/remove/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Data " + data);
+        console.log("Deleted: \n" + data);
       }
       res.send("Delete is good!");
     }
