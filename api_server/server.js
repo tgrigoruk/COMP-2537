@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+app.use(cors());
 
 const bodyparser = require("body-parser");
 app.use(
@@ -15,8 +17,14 @@ app.listen(5002, function (err) {
   if (err) console.log(err);
 });
 
-//---------- ROUTES ---------//
-let pokeapiUrl = "https://pokeapi.co/api/v2/";
+const pokemonDB = require("./pokemon.json");
+
+app.get("/pokemon/:id", function (req, res) {
+  pokemon = pokemonDB.pokemon.filter((p) => {
+    return p.id == req.params.id || p.name == req.params.id;
+  })[0];
+  res.send(pokemon);
+});
 
 app.get("/profile/:id", function (req, res) {
   const url = pokeapiUrl + req.params.id;
@@ -31,24 +39,12 @@ app.get("/profile/:id", function (req, res) {
   });
 });
 
-function extractPokemonData(data) {
-  data = JSON.parse(data);
-  stats = Object.assign(
-    {},
-    { base_xp: data.base_experience },
-    ...data.stats.map((stat) => ({
-      [stat.stat.name]: stat.base_stat,
-    }))
-  );
-  abilities = data.abilities.map((ability) => {
-    return ability.ability.name;
-  });
-  pokemonData = {
-    name: data.name[0].toUpperCase() + data.name.slice(1),
-    img: data.sprites.other["official-artwork"].front_default,
-    stats: stats,
-    abilities: abilities,
-  };
-  // console.log(pokemonData);
-  return pokemonData;
-}
+app.get("/type", function (req, res) {
+  res.send(pokemonDB.type);
+});
+app.get("/ability", function (req, res) {
+  res.send(pokemonDB.type);
+});
+app.get("/pokemon-color", function (req, res) {
+  res.send(pokemonDB.type);
+});
