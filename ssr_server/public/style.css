@@ -35,7 +35,7 @@ h2 {
     font-size: clamp(24px, 3vw, 40px);
 }
 
-` h3 {
+h3 {
     font-size: 24px;
 }
 
@@ -113,6 +113,25 @@ label {
 #search_history {
     width: 100px;
 }
+
+#event-history {
+    height: 200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#events {
+    width: clamp(300px, 50%, 600px);
+    height: 100%;
+    padding: 10px;
+    background-color: white;
+    border: 2px solid gray;
+    border-radius: 15px;
+}
+
+.event-group {}
 
 /*** index.html ***/
 
