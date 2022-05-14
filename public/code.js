@@ -4,7 +4,7 @@
 //   ? "https://fathomless-gorge-70141.herokuapp.com/"
 //   : "http://localhost:5002/";
 
-const pokeapiUrl = "http://localhost:5002/";
+const pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
 pokemonSearchList = [];
 async function searchPokemons() {
   searchUrl = $(this).val();
