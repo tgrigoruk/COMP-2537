@@ -15,14 +15,15 @@ app.use(
   })
 );
 
-const is_heroku = process.env.IS_HEROKU || false;
-const https = is_heroku ? require("https") : require("http");
-const mongooseUrl = is_heroku
-  ? "mongodb+srv://tgrigoruk:comp1537@cluster0.zvy6j.mongodb.net/timelineDB?retryWrites=true&w=majority"
-  : "mongodb://localhost:27017/timelineDB";
+// const is_heroku = process.env.IS_HEROKU || false;
+const https = true ? require("https") : require("http");
+// const mongoUrl = is_heroku
+//   ? "mongodb+srv://tgrigoruk:comp1537@cluster0.zvy6j.mongodb.net/timelineDB?retryWrites=true&w=majority"
+//   : "mongodb://localhost:27017/timelineDB";
+const mongoUrl = `mongodb+srv://Fred:yabbadabbadoo@cluster0.zvy6j.mongodb.net/timelineDB?retryWrites=true&w=majority`;
 
 const mongoose = require("mongoose");
-mongoose.connect(mongooseUrl, {
+mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -53,6 +54,7 @@ app.get("/profile/:id", function (req, res) {
       data += chunk;
     });
     https_res.on("end", function () {
+      console.log("view profile for " + JSON.parse(data).name);
       res.render("profile.ejs", extractPokemonData(data));
     });
   });

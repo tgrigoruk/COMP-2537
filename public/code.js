@@ -53,8 +53,8 @@ async function loadDropdowns() {
       type: "GET",
       url: pokeapiUrl + searchTypes[i],
       success: (data) => {
-        console.log(searchTypes[i]);
-        console.log(data.results);
+        // console.log(searchTypes[i]);
+        // console.log(data.results);
         options = "";
         for (j = 0; j < data.results.length; j++) {
           options += `<option value=${data.results[j].url}>${data.results[j].name}</option>`;
@@ -66,25 +66,6 @@ async function loadDropdowns() {
     });
   }
 }
-
-//
-// function loadDropdowns() {
-//   ["type", "ability", "pokemon-color"].forEach((searchType) => {
-//     $.ajax({
-//       type: "GET",
-//       url: pokeapiUrl + searchType,
-//       success: (data) => {
-//         console.log(data);
-//         options = "";
-//         data.results.forEach((result) => {
-//           options += `<option value=${result.url}>${result.name}</option>`;
-//         });
-//         if (searchType == "pokemon-color") searchType = "color";
-//         $(`#pokemon_${searchType}`).html(options);
-//       },
-//     });
-//   });
-// }
 
 let main_html = "";
 function makePokemonCard(pokemon) {
