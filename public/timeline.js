@@ -1,10 +1,7 @@
-const dbUrl = "http://localhost:5001/";
-// const dbUrl = "https://fathomless-gorge-70141.herokuapp.com/";
-
 function loadEvents() {
   $("#events").empty();
   $.ajax({
-    url: dbUrl + "timeline/getAllEvents",
+    url: "/timeline/getAllEvents",
     type: "get",
     success: (allEvents) => {
       // console.log(allEvents);
@@ -95,11 +92,3 @@ function setup() {
   $("select").change(searchEvent);
 }
 $(document).ready(setup);
-
-/* AJAX TEMPLATE
-$.ajax({
-  url: ``,
-  type: "",
-  success: () => {},
-});
-*/
