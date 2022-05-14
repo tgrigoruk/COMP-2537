@@ -4,6 +4,7 @@ app.use(express.static("./public"));
 app.set("view engine", "ejs");
 const cors = require("cors");
 app.use(cors());
+require("dotenv").config();
 
 const bodyparser = require("body-parser");
 app.use(
@@ -14,8 +15,7 @@ app.use(
   })
 );
 
-const https = require("https");
-const http = require("http");
+const https = process.env.IS_HEROKU ? require("https") : require("http");
 
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/timelineDB", {
@@ -29,8 +29,7 @@ const eventSchema = new mongoose.Schema({
 });
 const eventModel = mongoose.model("timelineEvents", eventSchema);
 
-// for Heroku prepend port number with:    process.env.PORT ||
-app.listen(5001, function (err) {
+app.listen(process.env.PORT || 5001, function (err) {
   if (err) console.log(err);
 });
 
@@ -45,7 +44,7 @@ app.get("/profile/:id", function (req, res) {
   data = "";
 
   // use http if local DB, otherwise use https
-  http.get(url, function (https_res) {
+  https.get(url, function (https_res) {
     https_res.on("data", function (chunk) {
       data += chunk;
     });
