@@ -16,12 +16,16 @@ app.use(
 );
 
 const https = process.env.IS_HEROKU ? require("https") : require("http");
-
+// "mongodb+srv://tgrigoruk:comp1537@cluster0.zvy6j.mongodb.net/A3?retryWrites=true&w=majority"
+// "mongodb://localhost:27017/timelineDB"
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/timelineDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://tgrigoruk:comp1537@cluster0.zvy6j.mongodb.net/timelineDB?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 const eventSchema = new mongoose.Schema({
   text: String,
   hits: Number,
