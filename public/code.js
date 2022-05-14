@@ -1,6 +1,10 @@
-// let pokeapiUrl = "https://pokeapi.co/api/v2/";
-let pokeapiUrl = "http://localhost:5002/";
+// original pokeapi: "https://pokeapi.co/api/v2/";
+// const is_heroku = process.env.IS_HEROKU || false;
+// const pokeapiUrl = is_heroku
+//   ? "https://fathomless-gorge-70141.herokuapp.com/"
+//   : "http://localhost:5002/";
 
+const pokeapiUrl = "http://localhost:5002/";
 pokemonSearchList = [];
 async function searchPokemons() {
   searchUrl = $(this).val();
@@ -18,7 +22,7 @@ async function searchPokemons() {
         });
       }
       loadPokemonCards(pokemonSearchList);
-      createButtons(pokemonSearchList);
+      // createButtons(pokemonSearchList);
     },
   });
 }
@@ -49,10 +53,10 @@ async function loadDropdowns() {
       type: "GET",
       url: pokeapiUrl + searchTypes[i],
       success: (data) => {
-        // console.log(searchTypes[i]);
-        // console.log(data.results);
+        console.log(searchTypes[i]);
+        console.log(data.results);
         options = "";
-        for (j = 0; j < data.results; j++) {
+        for (j = 0; j < data.results.length; j++) {
           options += `<option value=${data.results[j].url}>${data.results[j].name}</option>`;
         }
         let searchType = searchTypes[i];
@@ -62,6 +66,7 @@ async function loadDropdowns() {
     });
   }
 }
+
 //
 // function loadDropdowns() {
 //   ["type", "ability", "pokemon-color"].forEach((searchType) => {
@@ -98,18 +103,13 @@ function makePokemonCard(pokemon) {
 async function loadPokemonCards(pokemonIdList) {
   main_html = "";
   for (i = 0; i < 9; i++) {
-    // 0, 3, 6
-    if (i % 3 == 0) main_html += `<div class="images_group">`;
-
     await $.ajax({
       type: "GET",
       url: `${pokeapiUrl}pokemon/${pokemonIdList[i]}`,
       success: (pokemon) => {
-        main_html += makePokemonCard(pokemon);
+        if (pokemon) main_html += makePokemonCard(pokemon);
       },
     });
-
-    if (i % 3 == 2) main_html += `</div>`;
   }
   $("main").html(main_html);
 }
@@ -130,9 +130,9 @@ function randomPokemons(number) {
   return randomArr;
 }
 
-function setup() {
-  loadDropdowns();
-  loadPokemonCards([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+async function setup() {
+  await loadDropdowns();
+  await loadPokemonCards([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   $("select").change(searchPokemons);
   $("#pokemon_name").on("keydown", searchPokemonByName);
   // $(".page-button").on("click", changePage);

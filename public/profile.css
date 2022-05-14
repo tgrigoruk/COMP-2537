@@ -80,8 +80,7 @@ nav a:hover {
 
 main {
     padding: 15px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     justify-content: space-evenly;
 }
 
@@ -133,13 +132,14 @@ label {
     overflow: scroll;
 }
 
-.event-hit-counter,
-.event-time {
-    color: rgb(60, 60, 199);
-    font-size: larger;
-}
+.event-group {}
 
 /*** index.html ***/
+
+.images_group {
+    display: flex;
+    flex-direction: column;
+}
 
 .pokemon_card {
     /* width: 100%; */
