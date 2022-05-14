@@ -40,8 +40,8 @@ app.listen(process.env.PORT || 5001, function (err) {
 //---------- ROUTES ---------//
 
 // pokeapiUrl =  "https://pokeapi.co/api/v2/";
-pokeapiUrl = "http://localhost:5002/";
-// pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
+// pokeapiUrl = "http://localhost:5002/";
+pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
 
 app.get("/profile/:id", function (req, res) {
   const url = pokeapiUrl + `pokemon/${req.params.id}`;
