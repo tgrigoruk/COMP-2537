@@ -16,11 +16,11 @@ function loadEvents() {
           $("#events").append(
             `
             <div class="event" id="${id}"> 
-              ${allEvents[i].text}
-              <span class="event-time">@ ${allEvents[i].time}<span>
-              <span class="event-hit-counter">${allEvents[i].hits}<span>
-              <button class="like-button" onclick="likeEvent('${id}')">👍</button>
               <button class="delete-button" onclick=deleteEvent('${id}')>❌</button>
+              <button class="like-button" onclick="likeEvent('${id}')">👍</button>
+              <span class="event-hit-counter">${allEvents[i].hits}</span>
+              ${allEvents[i].text}
+              <span class="event-time">@ ${allEvents[i].time}</span>
             </div>
             `
           );
@@ -31,6 +31,21 @@ function loadEvents() {
 }
 
 var time = new Date();
+
+function searchEvent() {
+  eventName = $(this).val().slice(-7);
+  $.ajax({
+    url: `/timeline/insert`,
+    type: "POST",
+    data: {
+      text: `Searched for ${eventName}`,
+      time: time.toLocaleTimeString(),
+    },
+    success: (data) => {
+      loadEvents();
+    },
+  });
+}
 
 function profileViewed(pokemonName) {
   $.ajax({
@@ -76,6 +91,8 @@ function clearEvents() {
 }
 function setup() {
   loadEvents();
+  // $("option").on("click", searchEvent);
+  $("select").change(searchEvent);
 }
 $(document).ready(setup);
 
