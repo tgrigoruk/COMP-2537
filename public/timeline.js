@@ -10,7 +10,7 @@ function loadEvents() {
       } else {
         for (i = 0; i < allEvents.length; i++) {
           let id = allEvents[i]["_id"];
-          $("#events").append(
+          $("#events").prepend(
             `
             <div class="event" id="${id}"> 
               <button class="delete-button" onclick=deleteEvent('${id}')>❌</button>

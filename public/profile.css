@@ -251,7 +251,7 @@ progress {
     border-radius: 8px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 660px) {
 
     main,
     #search {
