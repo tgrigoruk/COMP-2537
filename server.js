@@ -4,8 +4,6 @@ app.use(express.static("./public"));
 app.set("view engine", "ejs");
 const cors = require("cors");
 app.use(cors());
-require("dotenv").config();
-
 const bodyparser = require("body-parser");
 app.use(
   bodyparser.urlencoded({
@@ -14,16 +12,11 @@ app.use(
     extended: true,
   })
 );
-
-// const is_heroku = process.env.IS_HEROKU || false;
-const https = true ? require("https") : require("http");
-// const mongoUrl = is_heroku
-//   ? "mongodb+srv://tgrigoruk:comp1537@cluster0.zvy6j.mongodb.net/timelineDB?retryWrites=true&w=majority"
-//   : "mongodb://localhost:27017/timelineDB";
-const mongoUrl = `mongodb+srv://Fred:yabbadabbadoo@cluster0.zvy6j.mongodb.net/timelineDB?retryWrites=true&w=majority`;
-
+const https = require("https");
+require("dotenv").config();
+const mongoUri = process.env.MONGODB_URI;
 const mongoose = require("mongoose");
-mongoose.connect(mongoUrl, {
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -40,12 +33,8 @@ app.listen(process.env.PORT || 5001, function (err) {
 
 //---------- ROUTES ---------//
 
-// pokeapiUrl =  "https://pokeapi.co/api/v2/";
-// pokeapiUrl = "http://localhost:5002/";
-pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
-
 app.get("/profile/:id", function (req, res) {
-  const url = pokeapiUrl + `pokemon/${req.params.id}`;
+  const url = `https://fathomless-gorge-70141.herokuapp.com/pokemon/${req.params.id}`;
   data = "";
 
   // use http if local DB, otherwise use https
