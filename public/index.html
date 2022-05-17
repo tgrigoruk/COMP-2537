@@ -15,19 +15,20 @@
       href="https://fonts.googleapis.com/css2?family=Coiny&family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <header>
       <h1>Pokedex!</h1>
       <nav>
         <div id="nav-left">
-          <a href="">Home</a>
-          <a href="">Away</a>
-          <a href="">Further Away</a>
+          <a href="/">Home</a>
+          <a href="https://pokemon.fandom.com/wiki/Pok%C3%A9mon_Wiki">Wiki</a>
+          <a href="/profile">Profile</a>
+          <a href="">My Cart</a>
         </div>
         <div id="about-me">
-          <a href="">Too Far?</a>
+          <a href="/login">Login</a>
         </div>
       </nav>
       <div id="search">
@@ -47,13 +48,9 @@
           <label for="pokemon_name">NAME</label>
           <input type="text" id="pokemon_name" />
         </div>
-        <!-- <div class="search-group">
-          <label for="search_history">Search History</label>
-          <div id="history-elements">
-            <select name="search_history" id="search_history"></select>
-            <button type="button">del</button>
-            <button type="button">clear</button>
-          </div> -->
+            <div id="history-button-container" class="search-group">
+          <button type="button" onclick="showHistory()">history</button>
+        </div>
         </div>
         <div id="event-history">
           <h2>Events History <button onclick="clearEvents()">clear all</button></h2>
@@ -74,8 +71,8 @@
     </footer>
   </body>
 
-  <script src="./code.js"></script>
-  <script src="./timeline.js"></script>
-    <script src="./cart.js"></script>
+  <script src="./js/index.js"></script>
+  <script src="./js/timeline.js"></script>
+    <script src="./js/cart.js"></script>
 </html>
 <th></th>

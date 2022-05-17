@@ -84,9 +84,9 @@ function makePokemonCard(pokemon) {
       
       <div class="card_header">
         <h3 class="pokemon_id">#${pokemon.id}</h3>
-        <button type="button" class="add-button" value=${pokemon.id}>add</button>
+        <button type="button" class="add-button" onclick=addToBasket(${pokemon.id})>add</button>
       </div>
-      <a href="/profile/${pokemon.id}" onclick="profileViewed('${pokemonName}')"> 
+      <a href="/pokemon/profile/${pokemon.id}" onclick="profileViewed('${pokemonName}')"> 
       <div class="image_container">
           <img src="${pokemon.sprites.other["official-artwork"].front_default}">
       </div>
@@ -109,12 +109,12 @@ async function loadPokemonCards(pokemonIdList) {
 }
 
 // e.g. "https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20"
-function changePage() {
-  buttonPressed = $(this).val();
-}
-function createButtons(pokemonList) {
-  pageCount = Math.floor(pokemonList.length / 9) + 1;
-}
+// function changePage() {
+//   buttonPressed = $(this).val();
+// }
+// function createButtons(pokemonList) {
+//   pageCount = Math.floor(pokemonList.length / 9) + 1;
+// }
 
 function randomPokemons(number) {
   randomArr = [];
@@ -122,6 +122,10 @@ function randomPokemons(number) {
     randomArr.push(Math.floor(Math.random() * 900) + 1);
   }
   return randomArr;
+}
+
+function showHistory() {
+  // show/hide the history panel
 }
 
 async function setup() {

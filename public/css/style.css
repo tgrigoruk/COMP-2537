@@ -115,6 +115,12 @@ label {
     width: 100px;
 }
 
+#history-button-container {
+    background-color: none !important;
+    justify-content: flex-end !important;
+}
+
+
 #event-history {
     height: 200px;
     padding: 20px;
