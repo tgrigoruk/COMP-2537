@@ -43,7 +43,7 @@ app.get("/profile/:id", function (req, res) {
       data += chunk;
     });
     https_res.on("end", function () {
-      console.log("view profile for " + JSON.parse(data).name);
+      // console.log("view profile for " + JSON.parse(data).name);
       res.render("profile.ejs", extractPokemonData(data));
     });
   });
@@ -74,14 +74,12 @@ app.get("/timeline/getAllEvents", function (req, res) {
     if (err) {
       console.log("Error " + err);
     } else {
-      // console.log("Data " + data);
     }
     res.send(data);
   });
 });
 
 app.post("/timeline/insert", function (req, res) {
-  console.log(req.body.text);
   eventModel.create(
     {
       text: req.body.text,
@@ -100,7 +98,6 @@ app.post("/timeline/insert", function (req, res) {
 });
 
 app.get("/timeline/like/:id", function (req, res) {
-  // console.log(req.params);
   eventModel.updateOne(
     {
       _id: req.params.id,
@@ -112,7 +109,7 @@ app.get("/timeline/like/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Liked: \n" + data);
+        console.log("Liked: \n" + JSON.stringify(data));
       }
       res.send("Update is good!");
     }
@@ -129,7 +126,7 @@ app.get("/timeline/remove/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Deleted: \n" + data);
+        console.log("Deleted: \n" + JSON.stringify(data));
       }
       res.send("Delete is good!");
     }

@@ -30,12 +30,12 @@ function loadEvents() {
 var time = new Date();
 
 function searchEvent() {
-  eventName = $(this).val().slice(-7);
+  eventName = $(this).val();
   $.ajax({
     url: `/timeline/insert`,
     type: "POST",
     data: {
-      text: `Searched for ${eventName}`,
+      text: `Searched for ${this.id.split("_")[1]}:${eventName}`,
       time: time.toLocaleTimeString(),
     },
     success: (data) => {

@@ -1,28 +1,19 @@
-// original pokeapi: "https://pokeapi.co/api/v2/";
-// const is_heroku = process.env.IS_HEROKU || false;
-// const pokeapiUrl = is_heroku
-//   ? "https://fathomless-gorge-70141.herokuapp.com/"
-//   : "http://localhost:5002/";
+// const pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
+const pokeapiUrl = "http://localhost:5002/";
 
-const pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
+var time = new Date();
 pokemonSearchList = [];
-async function searchPokemons() {
-  searchUrl = $(this).val();
+async function searchPokemons(searchType, searchParam) {
+  // console.log({ searchParam, searchType });
   await $.ajax({
     type: "GET",
-    url: searchUrl,
+    url: `${pokeapiUrl}search/${searchType}/${searchParam}`,
     success: (data) => {
-      if (searchUrl.includes("pokemon-color")) {
-        pokemonSearchList = data.pokemon_species.map((pokemon) => {
-          return pokemon.name;
-        });
-      } else {
-        pokemonSearchList = data.pokemon.map((pokemon) => {
-          return pokemon.pokemon.name;
-        });
-      }
+      // console.log(data);
+      pokemonSearchList = data.map((pokemon) => {
+        return pokemon.name;
+      });
       loadPokemonCards(pokemonSearchList);
-      // createButtons(pokemonSearchList);
     },
   });
 }
@@ -39,7 +30,23 @@ function searchPokemonByName(keypress) {
           alert("A pokemon by that name does not exist.");
         },
         success: (data) => {
-          window.location.href = `/profile/${data.id}`;
+          if (data) {
+            $.ajax({
+              url: `/timeline/insert`,
+              type: "POST",
+              data: {
+                text: `Searched for ${pokemonName}`,
+                time: time.toLocaleTimeString(),
+              },
+              success: (data) => {
+                loadEvents();
+              },
+            });
+
+            window.location.href = `/profile/${data.id}`;
+          } else {
+            alert("A pokemon by that name does not exist.");
+          }
         },
       });
     }
@@ -51,17 +58,19 @@ async function loadDropdowns() {
   for (i = 0; i < searchTypes.length; i++) {
     await $.ajax({
       type: "GET",
-      url: pokeapiUrl + searchTypes[i],
+      url: `${pokeapiUrl}search/${searchTypes[i]}/all`,
       success: (data) => {
+        let options = data.results;
         // console.log(searchTypes[i]);
-        // console.log(data.results);
-        options = "";
-        for (j = 0; j < data.results.length; j++) {
-          options += `<option value=${data.results[j].url}>${data.results[j].name}</option>`;
+        // console.log({ options });
+        optionsHtml = "";
+        for (j = 0; j < options.length; j++) {
+          // if using origi
+          optionsHtml += `<option value=${options[j].name}>${options[j].name}</option>`;
         }
         let searchType = searchTypes[i];
         if (searchType == "pokemon-color") searchType = "color";
-        $(`#pokemon_${searchType}`).html(options);
+        $(`#pokemon_${searchType}`).html(optionsHtml);
       },
     });
   }
@@ -114,9 +123,19 @@ function randomPokemons(number) {
 async function setup() {
   await loadDropdowns();
   await loadPokemonCards([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-  $("select").change(searchPokemons);
+  setDropdown("pokemon_type");
+  setDropdown("pokemon_ability");
+  setDropdown("pokemon_color");
   $("#pokemon_name").on("keydown", searchPokemonByName);
   // $(".page-button").on("click", changePage);
+}
+
+function setDropdown(dropdownId) {
+  $(`#${dropdownId}`).change(function () {
+    let searchParam = $(`#${dropdownId} option:selected`).text();
+    // console.log($(this).attr("name"));
+    searchPokemons(dropdownId.split("_")[1], searchParam);
+  });
 }
 
 $(document).ready(setup);
