@@ -153,9 +153,26 @@ label {
     justify-content: center; */
 }
 
+.card_header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .pokemon_id {
     margin: 1em;
     font-family: monospace;
+}
+
+.add-button {
+    z-index: 10;
+    margin: 1em;
+    height: 40px;
+    width: 45px;
+    font-family: monospace;
+    font-size: large;
+    background-color: hsl(60, 66%, 90%);
+    border-radius: 10px;
+
 }
 
 .pokemon_title {

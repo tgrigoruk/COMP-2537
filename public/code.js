@@ -81,8 +81,12 @@ function makePokemonCard(pokemon) {
   pokemonName = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
   return `
     <div class="pokemon_card">
+      
+      <div class="card_header">
+        <h3 class="pokemon_id">#${pokemon.id}</h3>
+        <button type="button" class="add-button" value=${pokemon.id}>add</button>
+      </div>
       <a href="/profile/${pokemon.id}" onclick="profileViewed('${pokemonName}')"> 
-      <h3 class="pokemon_id">#${pokemon.id}</h3>
       <div class="image_container">
           <img src="${pokemon.sprites.other["official-artwork"].front_default}">
       </div>
