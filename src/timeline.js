@@ -5,8 +5,6 @@ require("dotenv").config();
 const mongoUri = process.env.MONGODB_URI;
 
 const mongoose = require("mongoose");
-// const res = require("express/lib/response");
-// const { redirect } = require("express/lib/response");
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -17,7 +15,7 @@ const eventSchema = new mongoose.Schema({
   hits: Number,
   time: String,
 });
-const eventModel = mongoose.model("timelineEvents", eventSchema);
+const eventModel = mongoose.model("timelineevents", eventSchema);
 
 router.get("/getAllEvents", function (req, res) {
   eventModel.find({}, function (err, data) {

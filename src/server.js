@@ -22,6 +22,9 @@ app.use("/pokemon", pokemonProfile);
 const timeline = require("./timeline");
 app.use("/timeline", timeline);
 
+// const cart = require("./cart");
+// app.use("/cart", cart);
+
 app.use(
   session({
     secret: "blahblahblah",
@@ -34,7 +37,7 @@ function auth(req, res, next) {
   req.session.authenticated ? next() : res.redirect("/login");
 }
 
-let users = [
+users = [
   {
     username: "foo",
     password: "bar",
@@ -57,7 +60,7 @@ app.get("/", auth, function (req, res) {
   res.send(`Hello ${req.session.user}!`);
 });
 
-app.get("/login", auth, function (req, res) {
+app.get("/login", function (req, res) {
   res.render("login", {
     username: "",
     message: "",
@@ -82,9 +85,24 @@ app.post("/login", function (req, res) {
   }
 });
 
-// app.get("/login/:user/:password", function (req, res) {
+app.get("/userProfile/:name", auth, function (req, res) {});
 
-//   res.send(`Login`);
-// });
+app.get("/cart/add/:id", auth, function (req, res) {
+  // increment quantity
+  const id = req.params.id;
+  userCart = users[getUserIndex()].cart;
+  if (id in userCart) {
+    users[getUserIndex()].cart[id]++;
+  } else {
+    users[getUserIndex()].cart[id] = 1;
+  }
+  // res.send(users[getUserIndex()].cart[id]);
+  res.send(true);
+});
 
-app.get("/userProfile/:name", function (req, res) {});
+function getUserIndex() {
+  for (let i = 0; i < users.length; i++) {
+    if ((users[i].username = req.session.username)) return i;
+  }
+  return -1;
+}
