@@ -16,8 +16,8 @@ app.use(
   })
 );
 
-const pokemon = require("./pokemon");
-app.use("/pokemon", pokemon);
+const pokemonProfile = require("./pokemon");
+app.use("/pokemon", pokemonProfile);
 
 const timeline = require("./timeline");
 app.use("/timeline", timeline);
