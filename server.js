@@ -16,10 +16,10 @@ app.use(
   })
 );
 
-const pokemonProfile = require("./pokemon");
+const pokemonProfile = require("./src/pokemon");
 app.use("/pokemon", pokemonProfile);
 
-const timeline = require("./timeline");
+const timeline = require("./src/timeline");
 app.use("/timeline", timeline);
 
 // const cart = require("./cart");
@@ -32,6 +32,26 @@ app.use(
     resave: true,
   })
 );
+
+require("dotenv").config();
+const mongoUri = process.env.MONGODB_URI;
+
+const mongoose = require("mongoose");
+mongoose.connect(mongoUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const userSchema = new mongoose.Schema({
+  username: String,
+  email: String,
+  password: String,
+  added: String,
+  cart: [mongoose.Schema.Types.Mixed],
+  orderHistory: [mongoose.Schema.Types.Mixed],
+  eventHistory: [mongoose.Schema.Types.Mixed],
+});
+const userModel = mongoose.model("users", userSchema);
 
 function auth(req, res, next) {
   req.session.authenticated ? next() : res.redirect("/login");
@@ -135,3 +155,26 @@ function getUserIndex() {
   }
   return -1;
 }
+
+app.post("/register", function (req, res) {
+  const { username, email, password } = req.body;
+  userModel.create(
+    {
+      username: username,
+      email: email,
+      password: password,
+      added: "2022-05-20",
+      cart: [],
+      orderHistory: [],
+      eventHistory: [],
+    },
+    function (err, data) {
+      if (err) {
+        console.log("Error " + err);
+      } else {
+        console.log("New user account created: \n" + data);
+      }
+      res.send(data);
+    }
+  );
+});
