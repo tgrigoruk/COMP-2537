@@ -34,41 +34,51 @@
       }
       #submit-button {
         width: fit-content;
-        margin: 10px;
-      }
-      form a {
-        padding: 0.5em;
-        background-color: hsl(277, 100%, 93%);
-        border-radius: 10px;
+        margin-top: 10px;
       }
     </style>
   </head>
   <body>
-    <h2>Login!</h2>
-    <p><%= message %></p>
-    <form action="/login" method="POST" id="login-form">
-      <label for="username"> </label>
-      <input
-        type="text"
-        placeholder="Enter Username"
-        id="username"
-        name="username"
-        value="<%= username %>"
-        required
-      />
-
-      <br />
-      <label for="password"></label>
-      <input
-        type="password"
-        placeholder="Enter Password"
-        id="password"
-        name="password"
-        required
-      />
-      <br />
-      <input id="submit-button" type="submit" value="login" />
-      <a href="/newaccount">Create a new account</a>
+    <h2>Create a free account!</h2>
+    <form id="newAccountForm" action="/register" method="POST">
+      <p id="errorMsg"><%= message %></p>
+      <label for="username">
+        <input
+          type="text"
+          placeholder="Username"
+          id="username"
+          name="username"
+          required
+        />
+      </label>
+      <label for="email">
+        <input
+          type="text"
+          placeholder="Email"
+          id="email"
+          name="email"
+          value="<%= email %>"
+          required
+        />
+      </label>
+      <label for="password">
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          id="password"
+          required
+        />
+      </label>
+      <input id="submit-button" type="submit" value="Register!" />
     </form>
+    <footer>
+      <h2 id="footer-text">Created by Terence Grigoruk 2022</h2>
+    </footer>
   </body>
+
+  <script src="./js/index.js"></script>
+  <script src="./js/search.js"></script>
+  <script src="./js/timeline.js"></script>
+  <script src="./js/cart.js"></script>
 </html>

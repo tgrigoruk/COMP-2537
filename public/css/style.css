@@ -43,6 +43,12 @@ header {
     background-color: hsl(60, 100%, 90%);
 }
 
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
 #footer-text {
     color: hsl(194, 57%, 70%);
     width: 100%;
@@ -145,7 +151,7 @@ label {
     font-size: larger;
 }
 
-/*** index.html ***/
+/*** main.html ***/
 
 .pokemon_card {
     /* width: 100%; */

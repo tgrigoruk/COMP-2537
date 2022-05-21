@@ -85,6 +85,32 @@ app.post("/login", function (req, res) {
   }
 });
 
+app.get("/newaccount", function (req, res) {
+  res.render("newaccount", {
+    username: "",
+    email: "",
+    message: "",
+  });
+});
+
+app.post("/newaccount", function (req, res) {
+  const { username, email, password } = req.body;
+  // matchedUsers = users.filter(
+  //   (u) => u.username === username && u.password === password
+  // );
+  // if (matchedUsers.length == 1) {
+  //   req.session.authenticated = true;
+  //   req.username = username;
+  //   res.redirect("/");
+  // } else {
+  //   req.session.authenticated = false;
+  //   res.render("login", {
+  //     username: username,
+  //     message: "Username or password invalid.",
+  //   });
+  // }
+});
+
 app.get("/userProfile/:name", auth, function (req, res) {});
 
 app.get("/cart/add/:id", auth, function (req, res) {
