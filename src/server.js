@@ -55,9 +55,8 @@ app.listen(process.env.PORT || 5001, function (err) {
 
 //---------- ROUTES ----------//
 
-app.get("/", auth, function (req, res) {
-  console.log("goto main page");
-  res.send(`Hello ${req.session.user}!`);
+app.get("/", function (req, res) {
+  res.render("main");
 });
 
 app.get("/login", function (req, res) {
@@ -109,6 +108,10 @@ app.post("/newaccount", function (req, res) {
   //     message: "Username or password invalid.",
   //   });
   // }
+});
+
+app.get("/account", function (req, res) {
+  res.render("account");
 });
 
 app.get("/userProfile/:name", auth, function (req, res) {});
