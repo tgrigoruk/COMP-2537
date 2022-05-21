@@ -1,88 +1,4 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    font-family: monospace;
-}
 
-body {
-    background-color: hsl(167, 100%, 95%);
-}
-
-/* body,
-html {
-    height: 100%;
-} */
-
-a {
-    color: inherit;
-    text-decoration: inherit;
-    display: block;
-    height: max-content;
-}
-
-h1,
-h2,
-h3 {
-    font-family: 'Coiny', cursive;
-    text-align: center;
-}
-
-h1 {
-    font-size: clamp(32px, 6vw, 48px);
-}
-
-h2 {
-    font-size: clamp(22px, 2.8vw, 30px);
-}
-
-h3 {
-    font-size: 24px;
-}
-
-header {
-    background-color: hsl(60, 100%, 90%);
-}
-
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
-
-#footer-text {
-    color: hsl(194, 57%, 70%);
-    width: 100%;
-    text-align: center;
-    font-size: 20px;
-}
-
-nav {
-    background-color: hsl(194, 57%, 80%);
-    text-decoration: none;
-    display: flex;
-    justify-content: space-between;
-}
-
-#nav-left {
-    display: flex;
-    justify-content: flex-start;
-}
-
-nav a {
-    font-size: 12px;
-    font-family: 'Press Start 2P', monospace;
-    background-color: none;
-    border-radius: 10px;
-    text-decoration: none;
-    display: block;
-    padding: 0.75em 1em;
-    margin: 0.75em;
-    text-align: center;
-}
-
-nav a:hover {
-    background-color: hsl(194, 70%, 85%);
-}
 
 #pokemon-cards-go-here {
     padding: 15px 20px;
@@ -117,19 +33,21 @@ label {
     text-align: center;
 }
 
-
-/*** main.html ***/
-
 .pokemon_card {
     /* width: 100%; */
-    margin: 1.25em;
+    margin: 2em;
     border: 1px solid hsl(0, 0%, 20%);
     border-radius: 10px;
-    box-shadow: 4px 6px 8px gray;
+    box-shadow: 6px 8px 8px gray;
     background-image: linear-gradient(hsl(210, 100%, 93%), hsl(277, 100%, 93%));
     /* display: flex;
     flex-direction: column;
     justify-content: center; */
+}
+
+.pokemon_card:hover {
+transform: translate(-10px, -10px);
+box-shadow: 12px 16px 16px gray;
 }
 
 .card_header {
@@ -172,7 +90,7 @@ img {
 
 @media screen and (max-width: 660px) {
 
-    main {
+    #pokemon-cards-go-here {
         display: flex;
         flex-direction: column;
     }
