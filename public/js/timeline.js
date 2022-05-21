@@ -29,13 +29,12 @@ function loadEvents() {
 
 var time = new Date();
 
-function searchEvent() {
-  eventName = $(this).val();
+function searchEvent(searchType, searchValue) {
   $.ajax({
     url: `/timeline/insert`,
     type: "POST",
     data: {
-      text: `Searched for ${this.id.split("_")[1]}:${eventName}`,
+      text: `Searched by ${searchType}: ${searchValue}`,
       time: time.toLocaleTimeString(),
     },
     success: (data) => {
@@ -89,6 +88,6 @@ function clearEvents() {
 function setup() {
   loadEvents();
   // $("option").on("click", searchEvent);
-  $("select").change(searchEvent);
+  // $("select").change(searchEvent);
 }
 $(document).ready(setup);

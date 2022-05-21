@@ -38,7 +38,7 @@ router.post("/insert", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Inserted: \n" + data);
+        // console.log("Inserted: \n" + data);
       }
       res.send(data);
     }
@@ -57,7 +57,7 @@ router.get("/like/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Liked: \n" + JSON.stringify(data));
+        // console.log("Liked: \n" + JSON.stringify(data));
       }
       res.send("Update is good!");
     }
@@ -74,7 +74,7 @@ router.get("/remove/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Deleted: \n" + JSON.stringify(data));
+        // console.log("Deleted: \n" + JSON.stringify(data));
       }
       res.send("Delete is good!");
     }
@@ -91,7 +91,7 @@ router.get("/removeAll", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Deleted all");
+        // console.log("Deleted all");
       }
       res.send("Deleted all!");
     }

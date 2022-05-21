@@ -1,28 +1,53 @@
-// const pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
-const pokeapiUrl = "http://localhost:5002/";
+const pokeapiUrl = "https://pokeapi.co/api/v2/";
 
-async function loadDropdowns() {
-  const searchTypes = ["type", "ability", "pokemon-color"];
-  for (i = 0; i < searchTypes.length; i++) {
-    await $.ajax({
+function loadDropdowns() {
+  ["type", "ability", "pokemon-color"].forEach((searchType) => {
+    $.ajax({
       type: "GET",
-      url: `${pokeapiUrl}search/${searchTypes[i]}/all`,
+      url: `https://pokeapi.co/api/v2/${searchType}/`,
       success: (data) => {
-        let options = data.results;
-        // console.log(searchTypes[i]);
-        // console.log({ options });
-        optionsHtml = "";
-        for (j = 0; j < options.length; j++) {
-          // if using origi
-          optionsHtml += `<option value=${options[j].name}>${options[j].name}</option>`;
-        }
-        let searchType = searchTypes[i];
+        options = "";
+        data.results.forEach((result) => {
+          options += `<option value=${result.url}>${result.name}</option>`;
+        });
         if (searchType == "pokemon-color") searchType = "color";
-        $(`#pokemon_${searchType}`).html(optionsHtml);
+        $(`#pokemon_${searchType}`).html(options);
       },
     });
-  }
+    $(`#pokemon_${searchType}`)
+      .change(async function () {
+        let searchValue = $(`#pokemon_${searchType} option:selected`).text();
+        console.log({ searchValue });
+        await searchEvent(searchType, searchValue);
+      })
+      .change(function () {
+        searchPokemons(this.value);
+      });
+  });
 }
+
+// async function loadDropdowns() {
+//   const searchTypes = ["type", "ability", "pokemon-color"];
+//   for (i = 0; i < searchTypes.length; i++) {
+//     await $.ajax({
+//       type: "GET",
+//       url: `${pokeapiUrl}search/${searchTypes[i]}/all`,
+//       success: (data) => {
+//         let options = data.results;
+//         // console.log(searchTypes[i]);
+//         // console.log({ options });
+//         optionsHtml = "";
+//         for (j = 0; j < options.length; j++) {
+//           // if using origi
+//           optionsHtml += `<option value=${options[j].name}>${options[j].name}</option>`;
+//         }
+//         let searchType = searchTypes[i];
+//         if (searchType == "pokemon-color") searchType = "color";
+//         $(`#pokemon_${searchType}`).html(optionsHtml);
+//       },
+//     });
+//   }
+// }
 
 let main_html = "";
 function makePokemonCard(pokemon) {
@@ -57,7 +82,7 @@ async function loadPokemonCards(pokemonIdList) {
   $("main").html(main_html);
 }
 
-function randomPokemons(number) {
+function randomIntegersArray(number) {
   randomArr = [];
   for (i = 0; i < number; i++) {
     randomArr.push(Math.floor(Math.random() * 900) + 1);
@@ -69,21 +94,9 @@ function showHistory() {
   // show/hide the history panel
 }
 
-function setDropdown(dropdownId) {
-  $(`#${dropdownId}`).change(function () {
-    let searchParam = $(`#${dropdownId} option:selected`).text();
-    // console.log($(this).attr("name"));
-    searchPokemons(dropdownId.split("_")[1], searchParam);
-  });
-}
-
 async function setup() {
   await loadDropdowns();
   await loadPokemonCards([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-  setDropdown("pokemon_type");
-  setDropdown("pokemon_ability");
-  setDropdown("pokemon_color");
-  // $(".page-button").on("click", changePage);
 }
 
 $(document).ready(setup);

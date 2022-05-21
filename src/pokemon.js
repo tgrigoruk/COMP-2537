@@ -3,10 +3,9 @@ const express = require("express");
 var router = express.Router();
 
 router.get("/profile/:id", function (req, res) {
-  const url = `https://fathomless-gorge-70141.herokuapp.com/pokemon/${req.params.id}`;
+  const url = `https://pokeapi.co/api/v2/pokemon/${req.params.id}`;
   data = "";
 
-  // use http if local DB, otherwise use https
   https.get(url, function (https_res) {
     https_res.on("data", function (chunk) {
       data += chunk;
