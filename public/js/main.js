@@ -49,7 +49,7 @@ function loadDropdowns() {
 //   }
 // }
 
-let main_html = "";
+let pokemonCardsGrid = "";
 function makePokemonCard(pokemon) {
   // console.log(pokemon.name);
   pokemonName = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
@@ -69,17 +69,17 @@ function makePokemonCard(pokemon) {
 }
 async function loadPokemonCards(pokemonIdList) {
   // console.log(pokemonIdList);
-  main_html = "";
+  pokemonCardsGrid = "";
   for (i = 0; i < 9; i++) {
     await $.ajax({
       type: "GET",
       url: `${pokeapiUrl}pokemon/${pokemonIdList[i]}`,
       success: (pokemon) => {
-        if (pokemon) main_html += makePokemonCard(pokemon);
+        if (pokemon) pokemonCardsGrid += makePokemonCard(pokemon);
       },
     });
   }
-  $("main").html(main_html);
+  $("#pokemon-cards-go-here").html(pokemonCardsGrid);
 }
 
 function randomIntegersArray(number) {
