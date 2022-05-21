@@ -22,8 +22,9 @@ app.use("/pokemon", pokemonProfile);
 const timeline = require("./src/timeline");
 app.use("/timeline", timeline);
 
-// const cart = require("./cart");
+// const cart = require("./src/cart");
 // app.use("/cart", cart);
+
 
 app.use(
   session({
@@ -47,7 +48,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   added: String,
-  cart: [mongoose.Schema.Types.Mixed],
+  cart: [{ name: String, price: Number, quantity: Number }],
   orderHistory: [mongoose.Schema.Types.Mixed],
   eventHistory: [mongoose.Schema.Types.Mixed],
 });
@@ -70,10 +71,10 @@ users = [
 ];
 
 app.listen(process.env.PORT || 5001, function (err) {
-  if (err) console.log(err);
+  if (err) printError(err);
 });
 
-//---------- ROUTES ----------//
+//-------------------- USER ACCOUNT ROUTES --------------------//
 
 app.get("/", function (req, res) {
   res.render("main");
@@ -134,20 +135,9 @@ app.get("/account", function (req, res) {
   res.render("account");
 });
 
-app.get("/userProfile/:name", auth, function (req, res) {});
+app.get("/userProfile/:name", auth, function (req, res) { });
 
-app.get("/cart/add/:id", auth, function (req, res) {
-  // increment quantity
-  const id = req.params.id;
-  userCart = users[getUserIndex()].cart;
-  if (id in userCart) {
-    users[getUserIndex()].cart[id]++;
-  } else {
-    users[getUserIndex()].cart[id] = 1;
-  }
-  // res.send(users[getUserIndex()].cart[id]);
-  res.send(true);
-});
+
 
 function getUserIndex() {
   for (let i = 0; i < users.length; i++) {
@@ -170,11 +160,73 @@ app.post("/register", function (req, res) {
     },
     function (err, data) {
       if (err) {
-        console.log("Error " + err);
+        printError(err)
       } else {
         console.log("New user account created: \n" + data);
+        req.session.authenticated = true;
+        req.session.username = username;
+        res.redirect('/')
       }
       res.send(data);
     }
   );
 });
+
+//-------------------- SHOPPING CART ROUTES --------------------//
+
+
+app.get("/cart/add/:name/:price", function (req, res) {
+  let username = "test"
+  // const {username} = req.session
+  const itemName = req.params.name;
+  const itemPrice = parseInt(req.params.price)
+  console.log(`server.js route - name: ${itemName} , price: ${itemPrice}`)
+
+  userModel.find({ username: username, "cart.name": itemName }, function (err, result) {
+    // console.log(result[0].cart);
+    if (err) {
+      printError(err)
+    } else {
+      if (result.length) {
+        log({ result })
+        incrementItemQuantity(username, itemName)
+      } else {
+        addNewItemToCart(username, itemName, itemPrice)
+      }
+    }
+  })
+});
+function incrementItemQuantity(username, itemName) {
+  userModel.updateOne(
+    { username: username, "cart.name": itemName },
+    { $inc: { "cart.$.quantity": 1 } },
+    function (err, updateResult) {
+      if (err) {
+        printError(err)
+      } else {
+        log({ updateResult })
+      }
+    })
+}
+function addNewItemToCart(username, itemName, itemPrice) {
+  const newCartItem = { name: itemName, price: itemPrice, quantity: 1 }
+  log({ newCartItem })
+  userModel.updateOne(
+    { username: username },
+    { $push: { cart: newCartItem } },
+    function (err, updateResult) {
+      if (err) {
+        printError(err)
+      } else {
+        log({ updateResult })
+      }
+    }
+  )
+}
+
+function log(e) {
+  console.log(e)
+}
+function printError(err) {
+  console.log(`Error: ${err}`)
+}
