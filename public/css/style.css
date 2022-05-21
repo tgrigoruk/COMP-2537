@@ -117,39 +117,6 @@ label {
     text-align: center;
 }
 
-#search_history {
-    width: 100px;
-}
-
-#history-button-container {
-    background-color: none !important;
-    justify-content: flex-end !important;
-}
-
-
-#event-history {
-    height: 200px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#events {
-    width: clamp(400px, 80%, 600px);
-    height: 100%;
-    padding: 10px;
-    background-color: white;
-    border: 2px solid gray;
-    /* border-radius: 15px; */
-    overflow: scroll;
-}
-
-.event-hit-counter,
-.event-time {
-    color: rgb(60, 60, 199);
-    font-size: larger;
-}
 
 /*** main.html ***/
 
