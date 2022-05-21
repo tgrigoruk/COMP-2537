@@ -17,19 +17,7 @@
     <link rel="stylesheet" href="/css/profile.css" />
   </head>
   <body>
-    <header>
-      <h1>Pokedex!</h1>
-      <nav>
-        <div id="nav-left">
-          <a href="/">Home</a>
-          <a href="">Away</a>
-          <a href="">Further Away</a>
-        </div>
-        <div id="about-me">
-          <a href="">Too Far?</a>
-        </div>
-      </nav>
-    </header>
+    <header><%- include('partials/header.ejs') %></header>
     <main>
       <div id="left">
         <h2><%= name %></h2>

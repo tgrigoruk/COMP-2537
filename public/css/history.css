@@ -7,9 +7,12 @@
     justify-content: flex-end !important;
 }
 
+main {
+    height: 100%;
+}
 
 #event-history {
-    height: 200px;
+    height: 100%;
     padding: 20px;
     display: flex;
     flex-direction: column;

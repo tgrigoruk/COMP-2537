@@ -84,7 +84,7 @@ nav a:hover {
     background-color: hsl(194, 70%, 85%);
 }
 
-main {
+#pokemon-cards-go-here {
     padding: 15px 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
