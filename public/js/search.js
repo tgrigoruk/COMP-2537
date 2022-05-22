@@ -1,5 +1,3 @@
-// const pokeapiUrl = "https://fathomless-gorge-70141.herokuapp.com/";
-// const pokeapiUrl = "http://localhost:5002/";
 var time = new Date();
 
 pokemonSearchList = [];

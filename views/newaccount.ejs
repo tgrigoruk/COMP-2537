@@ -19,29 +19,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/global.css" />
-    <style>
-      body,
-      html {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      #submit-button {
-        width: fit-content;
-        margin-top: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="/css/loginaccount.css" />
   </head>
   <body>
     <h2>Create a free account!</h2>
     <form id="newAccountForm" action="/register" method="POST">
-      <p id="errorMsg"><%= message %></p>
+      <p id="errorMessage"><%= message %></p>
       <label for="username">
         <input
           type="text"
@@ -74,9 +57,4 @@
     </form>
     <%- include('partials/footer.ejs') %>
   </body>
-
-  <script src="./js/index.js"></script>
-  <script src="./js/search.js"></script>
-  <script src="./js/timeline.js"></script>
-  <script src="./js/cart.js"></script>
 </html>

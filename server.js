@@ -25,7 +25,6 @@ app.use("/timeline", timeline);
 // const cart = require("./src/cart");
 // app.use("/cart", cart);
 
-
 app.use(
   session({
     secret: "blahblahblah",
@@ -33,6 +32,8 @@ app.use(
     resave: true,
   })
 );
+
+//-------------------- MONGOOSE SETUP --------------------//
 
 require("dotenv").config();
 const mongoUri = process.env.MONGODB_URI;
@@ -57,19 +58,6 @@ const userModel = mongoose.model("users", userSchema);
 function auth(req, res, next) {
   req.session.authenticated ? next() : res.redirect("/login");
 }
-
-users = [
-  {
-    username: "foo",
-    password: "bar",
-    cart: [
-      { id: 1, price: 42.25, quantity: 2 },
-      { id: 3, price: 31.5, quantity: 5 },
-    ],
-  },
-  { username: "abc", password: "123", cart: [] },
-];
-
 app.listen(process.env.PORT || 5001, function (err) {
   if (err) printError(err);
 });
@@ -94,48 +82,24 @@ app.post("/login", function (req, res) {
   );
   if (matchedUsers.length == 1) {
     req.session.authenticated = true;
-    req.username = username;
+    req.session.username = username;
+    localStorage.setItem("username", username)
     res.redirect("/");
   } else {
     req.session.authenticated = false;
     res.render("login", {
       username: username,
-      message: "Username or password invalid.",
+      message: "Username or password invalid!",
     });
   }
 });
 
-app.get("/newaccount", function (req, res) {
-  res.render("newaccount", {
-    username: "",
-    email: "",
-    message: "",
-  });
-});
 
-app.post("/newaccount", function (req, res) {
-  const { username, email, password } = req.body;
-  // matchedUsers = users.filter(
-  //   (u) => u.username === username && u.password === password
-  // );
-  // if (matchedUsers.length == 1) {
-  //   req.session.authenticated = true;
-  //   req.username = username;
-  //   res.redirect("/");
-  // } else {
-  //   req.session.authenticated = false;
-  //   res.render("login", {
-  //     username: username,
-  //     message: "Username or password invalid.",
-  //   });
-  // }
-});
 
 app.get("/account", function (req, res) {
   res.render("account");
 });
 
-app.get("/userProfile/:name", auth, function (req, res) { });
 
 
 
@@ -146,8 +110,32 @@ function getUserIndex() {
   return -1;
 }
 
+app.get("/register", function (req, res) {
+  res.render("newaccount", {
+    email: "",
+    message: "",
+  });
+});
+
 app.post("/register", function (req, res) {
   const { username, email, password } = req.body;
+  userModel.find({ name: username }, function (err, result) {
+    if (err) {
+      printError(err)
+    } else {
+      if (result.length) {
+        log("User already exists")
+        res.render("newaccount", {
+          email: email,
+          message: "That username already exists!",
+        });
+      } else {
+        addNewUserToDB(username, email, password)
+      }
+    }
+  })
+});
+function addNewUserToDB(username, email, password) {
   userModel.create(
     {
       username: username,
@@ -170,7 +158,7 @@ app.post("/register", function (req, res) {
       res.send(data);
     }
   );
-});
+}
 
 //-------------------- SHOPPING CART ROUTES --------------------//
 
@@ -223,6 +211,8 @@ function addNewItemToCart(username, itemName, itemPrice) {
     }
   )
 }
+
+//-------------------- HELPER FUNCTIONS --------------------//
 
 function log(e) {
   console.log(e)

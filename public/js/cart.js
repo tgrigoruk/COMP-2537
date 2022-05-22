@@ -1,9 +1,9 @@
-function addToBasket(id) {
+function addToCart(name, base_xp) {
   $.ajax({
-    url: `/cart/add/${id}`,
+    url: `/cart/add/${name}/${base_xp}`,
     type: "GET",
     success: (res) => {
-      console.log(res);
+      console.log({ res })
     },
   });
 }

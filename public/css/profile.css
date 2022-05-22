@@ -28,40 +28,40 @@
     align-content: center;
 } */
 
-
 /*** profile.ejs ***/
 
 main {
-    padding: 15px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
 }
 
 #left,
 #right {
-    margin: 50px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    gap: 20px;
+  margin: 50px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  gap: 20px;
 }
 
 #left {
-    justify-content: center;
+  justify-content: center;
 }
-
+img {
+  width: clamp(275px, 90%, 600px);
+}
 #right {
-    /* width: 60%; */
-    margin: 1.25em;
-    padding: 1.25em;
-    border: 1.5px solid hsl(0, 0%, 40%);
-    border-radius: 20px;
-    box-shadow: 4px 6px 8px gray;
-    background-image: linear-gradient(hsl(29, 100%, 92%), hsl(228, 100%, 92%));
-    
+  /* width: 60%; */
+  margin: 1.25em;
+  padding: 1.25em;
+  border: 1.5px solid hsl(0, 0%, 40%);
+  border-radius: 20px;
+  box-shadow: 4px 6px 8px gray;
+  background-image: linear-gradient(hsl(29, 100%, 92%), hsl(228, 100%, 92%));
 }
 
 /* #main-img {
@@ -71,62 +71,60 @@ main {
 } */
 
 #stats {
-    display: grid;
-    grid-template: repeat(3, 1fr) / repeat(2, 1fr);
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(2, 1fr);
 }
 
 #stats,
 #abilities {
-    /* margin: 1.25em; */
-    border-radius: 10px;
-    background-color: hsla(180, 0%, 100%, 0.35);
+  /* margin: 1.25em; */
+  border-radius: 10px;
+  background-color: hsla(180, 0%, 100%, 0.35);
 }
 
 .stat {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-content: center;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-content: center;
 }
 label {
-    margin: 0.25em;
-    font-size: 14px;
-    font-family: 'Press Start 2P', monospace;
-    text-align: center;
-    display: block;
-    text-align: center;
+  margin: 0.25em;
+  font-size: 14px;
+  font-family: "Press Start 2P", monospace;
+  text-align: center;
+  display: block;
+  text-align: center;
 }
 
 progress {
-    width: 80%;
-    height: 1.5em;
-    align-self: center;
-    accent-color: hsl(180, 80%, 45%);
+  width: 80%;
+  height: 1.5em;
+  align-self: center;
+  accent-color: hsl(180, 80%, 45%);
 }
 
 #abilities {
-    display: flex;
-
+  display: flex;
 }
 
 .ability {
-    margin: 0.5em;
-    padding: 0.25em 0.5em;
-    font-size: 16px;
-    background-color: hsl(180, 80%, 45%, 50%);
-    border-radius: 8px;
+  margin: 0.5em;
+  padding: 0.25em 0.5em;
+  font-size: 16px;
+  background-color: hsl(180, 80%, 45%, 50%);
+  border-radius: 8px;
 }
 
 @media screen and (max-width: 660px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    main{
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #left,
-    #right {
-        width: 95%;
-    }
+  #left,
+  #right {
+    width: 95%;
+  }
 }

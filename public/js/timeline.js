@@ -6,8 +6,9 @@ function loadEvents() {
     success: (allEvents) => {
       // console.log(allEvents);
       if (allEvents.length == 0) {
-        $("#events").append("No events in history");
+        $("#events").append(`<p id="no-events">No events in history<p>`);
       } else {
+        console.log({ allEvents })
         for (i = 0; i < allEvents.length; i++) {
           let id = allEvents[i]["_id"];
           $("#events").prepend(
@@ -37,7 +38,7 @@ function searchEvent(searchType, searchValue) {
       text: `Searched by ${searchType}: ${searchValue}`,
       time: time.toLocaleTimeString(),
     },
-    success: (data) => {
+    success: () => {
       loadEvents();
     },
   });
@@ -51,7 +52,7 @@ function profileViewed(pokemonName) {
       text: `${pokemonName} profile viewed`,
       time: time.toLocaleTimeString(),
     },
-    success: (data) => {
+    success: () => {
       loadEvents();
     },
   });

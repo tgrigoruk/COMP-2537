@@ -19,33 +19,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/global.css" />
-    <style>
-      body,
-      html {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      #submit-button {
-        width: fit-content;
-        margin: 10px;
-      }
-      form a {
-        padding: 0.5em;
-        background-color: hsl(277, 100%, 93%);
-        border-radius: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="/css/loginaccount.css" />
   </head>
   <body>
     <h2>Login!</h2>
-    <p><%= message %></p>
+    <p id="errorMessage"><%= message %></p>
     <form action="/login" method="POST" id="login-form">
       <label for="username"> </label>
       <input
@@ -68,7 +46,7 @@
       />
       <br />
       <input id="submit-button" type="submit" value="login" />
-      <a href="/newaccount">Create a new account</a>
+      <a href="/register">Create a new account</a>
     </form>
     <%- include('partials/footer.ejs') %>
   </body>
