@@ -33,6 +33,7 @@ const cartSchema = new mongoose.Schema({
 });
 const cartModel = mongoose.model("shoppingcarts", cartSchema);
 
+
 //-------------------- SHOPPING CART ROUTES --------------------//
 
 username = 'test';
@@ -59,7 +60,6 @@ router.get("/add/:name/:price", function (req, res) {
   });
 });
 function incrementItemQuantity(username, itemName, amount) {
-  let incrementResult = false;
   cartModel.updateOne(
     { username: username, "cart.name": itemName },
     { $inc: { "cart.$.quantity": amount } },
@@ -70,7 +70,6 @@ function incrementItemQuantity(username, itemName, amount) {
         // log({ updateResult });
       }
     });
-  return incrementResult;
 }
 function addNewItemToCart(username, itemName, itemPrice) {
   const newCartItem = { name: itemName, price: itemPrice, quantity: 1 };
@@ -87,21 +86,44 @@ function addNewItemToCart(username, itemName, itemPrice) {
     }
   );
 }
-
-router.get("/increment/:name/:amount", async function (req, res) {
-  // console.log(req.params);
-  const { name, amount } = req.params;
-  await incrementItemQuantity(username, name, amount);
-  cartModel.findOne(
-    { username: username },
-    { cart: { $elemMatch: { name: name } } },
+function removeItemFromCart(username, itemName) {
+  // console.log(req.params)
+  cartModel.updateOne(
+    {
+      username: username,
+    },
+    { $pull: { cart: { name: itemName } } },
     function (err, data) {
       if (err) {
-        printError(err);
+        console.log("Error " + err);
       } else {
-        res.send({ quantity: data.cart[0].quantity });
+        // console.log("Deleted: \n" + JSON.stringify(data));
+        res.send({ quantity: 0 });
       }
-    });
+    }
+  );
+};
+
+router.get("/quantity/:name/:amount", async function (req, res) {
+  // console.log(req.params);
+  const { name, amount } = req.params;
+  if (amount) {
+    await incrementItemQuantity(username, name, amount);
+    cartModel.findOne(
+      { username: username },
+      { cart: { $elemMatch: { name: name } } },
+      function (err, data) {
+        if (err) {
+          printError(err);
+        } else {
+          res.send({ quantity: data.cart[0].quantity });
+        }
+      });
+  }
+  else {
+    await removeItemFromCart(name, res);
+    //res.send()
+  }
 });
 
 router.get("/remove/:name", function (req, res) {

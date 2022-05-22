@@ -11,21 +11,19 @@ function loadCartItems() {
           let name = cart[i].name;
           $("#cart-items").prepend(
             `
-            <div class="cart-item row-${parity}" id="${name}"> 
+            <div class="cart-item row-${parity}" id="item-${name}"> 
               ${capitalize(name)}
               <span class="cart-item-price">$${cart[i].price}</span>  
               <div class="quantity-container">
                 <button class="quantity-button" onclick="changeQuantity('${name}', -1)">-</button>
-                <span id="${name}-quantity" class="event-hit-quantity">${cart[i].quantity}</span>            
+                <span id="${name}-quantity" class="cart-item-quantity">${cart[i].quantity}</span>            
                 <button class="quantity-button" onclick="changeQuantity('${name}', 1)">+</button>
-                <button class="delete-button" onclick=removeFromCart('${name}')>remove</button>
+                <button class="delete-button" onclick=changeQuantity('${name}', 0)>remove</button>
               </div>
             </div>
             `
           );
         }
-        $("#cart-items").prepend(`<div class="cart-item cart-header">
-          <p>Pokemon Name</p><p>Price</p><p style="text-align:center">Quantity</p></div>`);
       } else {
         $("#cart-items").append(`<p id="cart-empty">Cart is currently empty</p>`);
       }
@@ -47,11 +45,13 @@ function addToCart(name, base_xp) {
 function changeQuantity(name, amount) {
   console.log(name);
   $.ajax({
-    url: `/cart/increment/${name}/${amount}`,
+    url: `/cart/quantity/${name}/${amount}`,
     type: "GET",
     success: (res) => {
-      if (res) {
+      if (res.quantity > 0) {
         $(`#${name}-quantity`).text(res.quantity);
+      } else {
+        $(`#item-${name}`).remove();
       }
     },
   });

@@ -1,82 +1,90 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    font-family: monospace;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: monospace;
 }
 
-body, html {
-    height: 100%;
-    background-color: hsl(167, 100%, 95%);
+body,
+html {
+  height: 100%;
+  background-color: hsl(167, 100%, 95%);
 }
 
 a {
-    color: inherit;
-    text-decoration: inherit;
-    display: block;
-    height: max-content;
+  color: inherit;
+  text-decoration: inherit;
+  display: block;
+  height: max-content;
 }
 
 h1,
 h2,
 h3 {
-    font-family: 'Coiny', cursive;
-    text-align: center;
+  font-family: "Coiny", cursive;
+  text-align: center;
 }
 
 h1 {
-    font-size: clamp(32px, 5vw, 44px);
+  font-size: clamp(32px, 5vw, 44px);
 }
 
 h2 {
-    font-size: clamp(22px, 2.8vw, 30px);
+  font-size: clamp(22px, 2.8vw, 30px);
 }
 
 h3 {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 header {
-    background-color: hsl(60, 100%, 90%);
+  background-color: hsl(60, 100%, 90%);
 }
 
 nav {
-    background-color: hsl(194, 57%, 80%);
-    text-decoration: none;
-    display: flex;
-    justify-content: space-between;
+  background-color: hsl(194, 57%, 80%);
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
 }
 
 #nav-left {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 nav a {
-    font-size: 12px;
-    font-family: 'Press Start 2P', monospace;
-    background-color: none;
-    border-radius: 8px;
-    text-decoration: none;
-    display: block;
-    padding: 0.5em 1em;
-    margin: 0.5em;
-    text-align: center;
+  font-size: 12px;
+  font-family: "Press Start 2P", monospace;
+  background-color: none;
+  border-radius: 8px;
+  text-decoration: none;
+  display: block;
+  padding: 0.5em 1em;
+  margin: 0.5em;
+  text-align: center;
 }
 
 nav a:hover {
-    background-color: hsl(194, 70%, 85%);
+  background-color: hsl(194, 70%, 85%);
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 #footer-text {
-    color: hsl(194, 57%, 70%);
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    font-weight:100;
+  color: hsl(194, 57%, 70%);
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 100;
+}
+
+@media screen and (max-width: 460px) {
+  nav,
+  #nav-left {
+    flex-direction: column;
+  }
 }

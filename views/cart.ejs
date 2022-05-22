@@ -24,10 +24,15 @@
   <body>
     <header><%- include('partials/header.ejs') %></header>
     <main>
+      <div id="cart-title">
+        <h2>Shopping Cart</h2>
+        <button onclick="emptyCart()">empty cart</button>
+      </div>
       <div id="cart-container">
-        <div id="cart-title">
-          <h2>Shopping Cart</h2>
-          <button onclick="emptyCart()">empty cart</button>
+        <div class="cart-item cart-header">
+          <p>Pokemon Name</p>
+          <p>Price</p>
+          <p style="text-align: center">Quantity</p>
         </div>
         <div id="cart-items">
           <!-- events go here -->
