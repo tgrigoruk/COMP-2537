@@ -1,4 +1,5 @@
 function addToCart(name, base_xp) {
+  console.log(name)
   $.ajax({
     url: `/cart/add/${name}/${base_xp}`,
     type: "GET",

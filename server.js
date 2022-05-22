@@ -22,8 +22,8 @@ app.use("/pokemon", pokemonProfile);
 const timeline = require("./src/timeline");
 app.use("/timeline", timeline);
 
-// const cart = require("./src/cart");
-// app.use("/cart", cart);
+const cart = require("./src/cart");
+app.use("/cart", cart);
 
 app.use(
   session({
@@ -49,9 +49,6 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   added: String,
-  cart: [{ name: String, price: Number, quantity: Number }],
-  orderHistory: [mongoose.Schema.Types.Mixed],
-  eventHistory: [mongoose.Schema.Types.Mixed],
 });
 const userModel = mongoose.model("users", userSchema);
 
@@ -142,9 +139,6 @@ function addNewUserToDB(username, email, password) {
       email: email,
       password: password,
       added: "2022-05-20",
-      cart: [],
-      orderHistory: [],
-      eventHistory: [],
     },
     function (err, data) {
       if (err) {
@@ -158,65 +152,4 @@ function addNewUserToDB(username, email, password) {
       res.send(data);
     }
   );
-}
-
-//-------------------- SHOPPING CART ROUTES --------------------//
-
-
-app.get("/cart/add/:name/:price", function (req, res) {
-  let username = "test"
-  // const {username} = req.session
-  const itemName = req.params.name;
-  const itemPrice = parseInt(req.params.price)
-  console.log(`server.js route - name: ${itemName} , price: ${itemPrice}`)
-
-  userModel.find({ username: username, "cart.name": itemName }, function (err, result) {
-    // console.log(result[0].cart);
-    if (err) {
-      printError(err)
-    } else {
-      if (result.length) {
-        log({ result })
-        incrementItemQuantity(username, itemName)
-      } else {
-        addNewItemToCart(username, itemName, itemPrice)
-      }
-    }
-  })
-});
-function incrementItemQuantity(username, itemName) {
-  userModel.updateOne(
-    { username: username, "cart.name": itemName },
-    { $inc: { "cart.$.quantity": 1 } },
-    function (err, updateResult) {
-      if (err) {
-        printError(err)
-      } else {
-        log({ updateResult })
-      }
-    })
-}
-function addNewItemToCart(username, itemName, itemPrice) {
-  const newCartItem = { name: itemName, price: itemPrice, quantity: 1 }
-  log({ newCartItem })
-  userModel.updateOne(
-    { username: username },
-    { $push: { cart: newCartItem } },
-    function (err, updateResult) {
-      if (err) {
-        printError(err)
-      } else {
-        log({ updateResult })
-      }
-    }
-  )
-}
-
-//-------------------- HELPER FUNCTIONS --------------------//
-
-function log(e) {
-  console.log(e)
-}
-function printError(err) {
-  console.log(`Error: ${err}`)
 }
