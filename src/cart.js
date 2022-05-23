@@ -2,6 +2,7 @@ const express = require("express");
 var router = express.Router();
 const session = require("express-session");
 const res = require("express/lib/response");
+const { compileETag } = require("express/lib/utils");
 
 //-------------------- MONGOOSE SETUP --------------------//
 
@@ -22,8 +23,8 @@ const cartSchema = new mongoose.Schema({
     quantity: Number
   }],
   orderHistory: [{
-    amount: Number,
-    datefulfilled: Date,
+    total: Number,
+    time: Date,
     items: [{
       name: String,
       price: Number,
@@ -146,6 +147,27 @@ router.get("/getCart", function (req, res) {
       res.send(response.cart);
     }
   });
+});
+
+router.post("/checkout", async function (req, res) {
+  const { total, time } = req.body;
+  const cart = await cartModel.findOne({ username: username }).then(function (data) {
+    const order = { time: time, total: total, items: data.cart };
+    // log(order);
+    cartModel.updateOne(
+      { username: username },
+      { $push: { orderHistory: order } },
+      { upsert: true },
+      function (err, pushResponse) {
+        if (err) {
+          printError(err);
+        } else {
+          res.send("Order checkout out");
+        }
+      });
+
+  });
+
 });
 
 //-------------------- HELPER FUNCTIONS --------------------//

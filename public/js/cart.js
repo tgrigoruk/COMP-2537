@@ -112,10 +112,26 @@ function createTotals() {
   $("#total-subtotal").text(formatter.format(subtotal));
   const tax = subtotal * 0.05;
   $("#total-tax").text(formatter.format(tax));
-  $("#total-total").text(formatter.format(subtotal + tax));
+  const total = subtotal + tax;
+  $("#total-total").text(formatter.format(total));
+  $("#total-total").attr("value", total);
 }
-function checkout() {
-  // 
+
+var time = new Date();
+
+async function checkout() {
+  const total = $("#total-total").attr("value");
+  await $.ajax({
+    url: `/cart/checkout`,
+    type: "POST",
+    data: {
+      total: total,
+      time: time.toISOString()
+    },
+    success: (res) => {
+      emptyCart();
+    },
+  });
 }
 
 
