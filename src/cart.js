@@ -37,8 +37,6 @@ const cartModel = mongoose.model("shoppingcarts", cartSchema);
 
 //-------------------- SHOPPING CART ROUTES --------------------//
 
-username = 'test';
-
 router.get("/add/:name/:price", function (req, res) {
   let username = "test";
   // const {username} = req.session

@@ -61,6 +61,8 @@ app.listen(process.env.PORT || 5001, function (err) {
 
 //-------------------- USER ACCOUNT ROUTES --------------------//
 
+var user;
+
 app.get("/", function (req, res) {
   res.render("main");
 });
@@ -74,28 +76,25 @@ app.get("/login", function (req, res) {
 
 app.post("/login", function (req, res) {
   const { username, password } = req.body;
-  matchedUsers = users.filter(
-    (u) => u.username === username && u.password === password
-  );
-  if (matchedUsers.length == 1) {
-    req.session.authenticated = true;
-    req.session.username = username;
-    localStorage.setItem("username", username);
-    res.redirect("/");
-  } else {
-    req.session.authenticated = false;
-    res.render("login", {
-      username: username,
-      message: "Username or password invalid!",
-    });
-  }
+  userModel.find({ username: username, password: password }).then(function (result) {
+    if (result.length) {
+      req.session.authenticated = true;
+      req.session.username = username;
+      user = req.session;
+      res.redirect("/account");
+    } else {
+      req.session.authenticated = false;
+      res.render("login", {
+        username: username,
+        message: "Username or password invalid!",
+      });
+    }
+  });
 });
 
-username = "test";
-email = "test@gmail.com";
-
 app.get("/account", function (req, res) {
-  res.render("account", { username: username, email: email });
+  console.log(user);
+  res.render("account", { username: user.username });
 });
 
 function getUserIndex() {
@@ -113,13 +112,16 @@ app.get("/register", function (req, res) {
 });
 
 app.post("/register", function (req, res) {
+  console.log(req.body);
+  user = req.session;
   const { username, email, password } = req.body;
-  userModel.find({ name: username }, function (err, result) {
+  userModel.find({ username: username }, function (err, result) {
+    console.log({ result });
     if (err) {
       printError(err);
     } else {
       if (result.length) {
-        log("User already exists");
+        console.log("User already exists");
         res.render("newaccount", {
           email: email,
           message: "That username already exists!",
@@ -143,8 +145,8 @@ function addNewUserToDB(username, email, password) {
         printError(err);
       } else {
         console.log("New user account created: \n" + data);
-        req.session.authenticated = true;
-        req.session.username = username;
+        user.authenticated = true;
+        user.username = username;
         res.redirect('/');
       }
       res.send(data);

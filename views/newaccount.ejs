@@ -22,39 +22,42 @@
     <link rel="stylesheet" href="/css/loginaccount.css" />
   </head>
   <body>
-    <h2>Create a free account!</h2>
-    <form id="newAccountForm" action="/register" method="POST">
-      <p id="errorMessage"><%= message %></p>
-      <label for="username">
-        <input
-          type="text"
-          placeholder="Username"
-          id="username"
-          name="username"
-          required
-        />
-      </label>
-      <label for="email">
-        <input
-          type="text"
-          placeholder="Email"
-          id="email"
-          name="email"
-          value="<%= email %>"
-          required
-        />
-      </label>
-      <label for="password">
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          id="password"
-          required
-        />
-      </label>
-      <input id="submit-button" type="submit" value="Register!" />
-    </form>
+    <a id="home" href="/">&lt; Home</a>
+    <main>
+      <h2>Create a free account!</h2>
+      <form id="newAccountForm" action="/register" method="POST">
+        <p id="errorMessage"><%= message %></p>
+        <label for="username">
+          <input
+            type="text"
+            placeholder="Username"
+            id="username"
+            name="username"
+            required
+          />
+        </label>
+        <label for="email">
+          <input
+            type="text"
+            placeholder="Email"
+            id="email"
+            name="email"
+            value="<%= email %>"
+            required
+          />
+        </label>
+        <label for="password">
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            id="password"
+            required
+          />
+        </label>
+        <input id="submit-button" type="submit" value="Register!" />
+      </form>
+    </main>
     <%- include('partials/footer.ejs') %>
   </body>
 </html>
