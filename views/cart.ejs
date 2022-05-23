@@ -26,7 +26,10 @@
     <main>
       <div id="cart-title">
         <h2>Shopping Cart</h2>
-        <button onclick="emptyCart()">empty cart</button>
+        <div id="cart-buttons">
+          <button onclick="checkout()">checkout</button>
+          <button id="empty-cart" onclick="emptyCart()">empty cart</button>
+        </div>
       </div>
       <div id="cart-container">
         <div class="cart-item cart-header">
