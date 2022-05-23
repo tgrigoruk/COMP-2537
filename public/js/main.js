@@ -26,29 +26,6 @@ function loadDropdowns() {
   });
 }
 
-// async function loadDropdowns() {
-//   const searchTypes = ["type", "ability", "pokemon-color"];
-//   for (i = 0; i < searchTypes.length; i++) {
-//     await $.ajax({
-//       type: "GET",
-//       url: `${pokeapiUrl}search/${searchTypes[i]}/all`,
-//       success: (data) => {
-//         let options = data.results;
-//         // console.log(searchTypes[i]);
-//         // console.log({ options });
-//         optionsHtml = "";
-//         for (j = 0; j < options.length; j++) {
-//           // if using origi
-//           optionsHtml += `<option value=${options[j].name}>${options[j].name}</option>`;
-//         }
-//         let searchType = searchTypes[i];
-//         if (searchType == "pokemon-color") searchType = "color";
-//         $(`#pokemon_${searchType}`).html(optionsHtml);
-//       },
-//     });
-//   }
-// }
-
 let pokemonCardsGrid = "";
 function makePokemonCard(pokemon) {
   // console.log(pokemon.name);

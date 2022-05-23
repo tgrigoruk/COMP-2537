@@ -54,7 +54,7 @@ box-shadow: 12px 16px 16px gray;
 }
 
 .pokemon_id {
-  margin: 1em;
+  margin: 0.75em;
   font-family: monospace;
 }
 
@@ -70,7 +70,7 @@ box-shadow: 12px 16px 16px gray;
 }
 
 .pokemon_title {
-  margin: 1em;
+  margin: 0.75em;
   text-shadow: 2px 2px 2px white;
 }
 
