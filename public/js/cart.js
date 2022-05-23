@@ -7,6 +7,7 @@ function loadCartItems() {
       console.log({ cart });
       if (cart) {
         for (i = 0; i < cart.length; i++) {
+          if (cart[i].quantity < 1) continue;
           parity = i % 2 ? "odd" : "even";
           let name = cart[i].name;
           $("#cart-items").prepend(
@@ -18,7 +19,7 @@ function loadCartItems() {
                 <button class="quantity-button" onclick="changeQuantity('${name}', -1)">-</button>
                 <span id="${name}-quantity" class="cart-item-quantity">${cart[i].quantity}</span>            
                 <button class="quantity-button" onclick="changeQuantity('${name}', 1)">+</button>
-                <button class="delete-button" onclick=changeQuantity('${name}', 0)>remove</button>
+                <button class="remove-button" onclick="changeQuantity('${name}', 0)">remove</button>
               </div>
             </div>
             `
@@ -43,16 +44,22 @@ function addToCart(name, base_xp) {
 }
 
 function changeQuantity(name, amount) {
-  console.log(name);
+  const currQuantity = amount ? parseInt($(`#${name}-quantity`).text()) + amount : 0;
   $.ajax({
     url: `/cart/quantity/${name}/${amount}`,
     type: "GET",
     success: (res) => {
-      if (res.quantity > 0) {
-        $(`#${name}-quantity`).text(res.quantity);
+      if (currQuantity > 0) {
+        $(`#${name}-quantity`).text(currQuantity);
       } else {
         $(`#item-${name}`).remove();
       }
+
+      // if (res.quantity > 0) {
+      //   $(`#${name}-quantity`).text(res.quantity);
+      // } else {
+      //   $(`#item-${name}`).remove();
+      // }
     },
   });
 }

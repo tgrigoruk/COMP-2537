@@ -17,7 +17,7 @@ main {
 
 #cart-container {
   height: 100%;
-  width: clamp(450px, 80%, 600px);
+  width: clamp(350px, 80%, 600px);
   /* display: flex; */
   border-radius: 15px;
   overflow: hidden;
@@ -74,4 +74,11 @@ main {
   margin: 1em;
   text-align: center;
   font-style: italic;
+}
+
+#cart-container button {
+  font-size: 10px;
+}
+.quantity-button {
+  font-weight: bold;
 }

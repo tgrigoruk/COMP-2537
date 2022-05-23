@@ -51,7 +51,7 @@ router.get("/add/:name/:price", function (req, res) {
       printError(err);
     } else {
       if (result.length) {
-        log({ result });
+        // log({ result });
         incrementItemQuantity(username, itemName, 1);
       } else {
         addNewItemToCart(username, itemName, itemPrice);
@@ -59,18 +59,17 @@ router.get("/add/:name/:price", function (req, res) {
     }
   });
 });
-function incrementItemQuantity(username, itemName, amount) {
+async function incrementItemQuantity(username, itemName, amount) {
   cartModel.updateOne(
     { username: username, "cart.name": itemName },
-    { $inc: { "cart.$.quantity": amount } },
-    function (err, updateResult) {
-      if (err) {
-        printError(err);
-      } else {
-        // log({ updateResult });
-      }
-    });
+    {
+      $inc: { "cart.$.quantity": amount }
+    }).then(function (doc) {
+      log(doc);
+    }).catch(function (err) { printError(err); });
 }
+
+
 function addNewItemToCart(username, itemName, itemPrice) {
   const newCartItem = { name: itemName, price: itemPrice, quantity: 1 };
   cartModel.updateOne(
@@ -86,8 +85,7 @@ function addNewItemToCart(username, itemName, itemPrice) {
     }
   );
 }
-function removeItemFromCart(username, itemName) {
-  // console.log(req.params)
+function removeItemFromCart(itemName) {
   cartModel.updateOne(
     {
       username: username,
@@ -98,15 +96,16 @@ function removeItemFromCart(username, itemName) {
         console.log("Error " + err);
       } else {
         // console.log("Deleted: \n" + JSON.stringify(data));
-        res.send({ quantity: 0 });
+        // res.send({ quantity: 0 });
       }
     }
   );
 };
 
 router.get("/quantity/:name/:amount", async function (req, res) {
-  // console.log(req.params);
-  const { name, amount } = req.params;
+  // log(req.params);
+  let { name, amount } = req.params;
+  amount = parseInt(amount);
   if (amount) {
     await incrementItemQuantity(username, name, amount);
     cartModel.findOne(
@@ -116,13 +115,15 @@ router.get("/quantity/:name/:amount", async function (req, res) {
         if (err) {
           printError(err);
         } else {
-          res.send({ quantity: data.cart[0].quantity });
+          const quantity = data.cart[0].quantity;
+          if (quantity < 1) removeItemFromCart(name);
+          res.send({ quantity: quantity });
         }
       });
   }
   else {
-    await removeItemFromCart(name, res);
-    //res.send()
+    removeItemFromCart(name);
+    res.send({ quantity: 0 });
   }
 });
 
