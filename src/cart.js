@@ -46,12 +46,10 @@ router.get("/add/:name/:price", function (req, res) {
   console.log(`server.js route - name: ${itemName} , price: ${itemPrice}`);
 
   cartModel.find({ username: username, "cart.name": itemName }, function (err, result) {
-    // console.log({ result });
     if (err) {
       printError(err);
     } else {
       if (result.length) {
-        // log({ result });
         incrementItemQuantity(username, itemName, 1);
       } else {
         addNewItemToCart(username, itemName, itemPrice);
@@ -65,11 +63,9 @@ async function incrementItemQuantity(username, itemName, amount) {
     {
       $inc: { "cart.$.quantity": amount }
     }).then(function (doc) {
-      log(doc);
+      // log(doc);
     }).catch(function (err) { printError(err); });
 }
-
-
 function addNewItemToCart(username, itemName, itemPrice) {
   const newCartItem = { name: itemName, price: itemPrice, quantity: 1 };
   cartModel.updateOne(
@@ -127,14 +123,16 @@ router.get("/quantity/:name/:amount", async function (req, res) {
   }
 });
 
-router.get("/remove/:name", function (req, res) {
-  // remove one or all
+router.get("/empty", function (req, res) {
+  cartModel.updateOne(
+    { username: username },
+    {
+      $set: { cart: [] }
+    }).then(function (doc) {
+      res.send("Cart emptied");
+    }).catch(function (err) { printError(err); });
 });
 
-
-router.get("/finalizeOrder", function (req, res) {
-  // move items to orderHistroy and remove all
-});
 
 router.get("/view", function (req, res) {
   res.render('cart');
