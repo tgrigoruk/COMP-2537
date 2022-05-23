@@ -1,0 +1,11 @@
+.order-row,
+.order-items {
+  padding: 1em;
+}
+
+.row-even {
+  background-color: hsl(212, 10%, 94%);
+}
+.row-odd {
+  background-color: hsl(212, 10%, 97%);
+}

@@ -8,21 +8,27 @@
 }
 
 main {
+  margin-top: 30px;
   height: 80%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
 }
 
-#event-history {
-  height: 100%;
+.history-container {
+  margin-top: 30px;
+  height: 50%;
   width: clamp(450px, 80%, 800px);
   padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
-#events {
-  height: 100%;
+#events,
+#orders {
+  height: 90%;
   background-color: white;
   border: 2px solid gray;
   /* border-radius: 15px; */

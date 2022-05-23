@@ -165,9 +165,13 @@ router.post("/checkout", async function (req, res) {
           res.send("Order checkout out");
         }
       });
-
   });
+});
 
+router.get("/orderHistory", async function (req, res) {
+  const histroy = await cartModel.findOne({ username: username }).then(function (data) {
+    res.send(data.orderHistory);
+  });
 });
 
 //-------------------- HELPER FUNCTIONS --------------------//

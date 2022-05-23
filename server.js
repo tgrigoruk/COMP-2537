@@ -80,7 +80,7 @@ app.post("/login", function (req, res) {
   if (matchedUsers.length == 1) {
     req.session.authenticated = true;
     req.session.username = username;
-    localStorage.setItem("username", username)
+    localStorage.setItem("username", username);
     res.redirect("/");
   } else {
     req.session.authenticated = false;
@@ -91,14 +91,12 @@ app.post("/login", function (req, res) {
   }
 });
 
-
+username = "test";
+email = "test@gmail.com";
 
 app.get("/account", function (req, res) {
-  res.render("account");
+  res.render("account", { username: username, email: email });
 });
-
-
-
 
 function getUserIndex() {
   for (let i = 0; i < users.length; i++) {
@@ -118,19 +116,19 @@ app.post("/register", function (req, res) {
   const { username, email, password } = req.body;
   userModel.find({ name: username }, function (err, result) {
     if (err) {
-      printError(err)
+      printError(err);
     } else {
       if (result.length) {
-        log("User already exists")
+        log("User already exists");
         res.render("newaccount", {
           email: email,
           message: "That username already exists!",
         });
       } else {
-        addNewUserToDB(username, email, password)
+        addNewUserToDB(username, email, password);
       }
     }
-  })
+  });
 });
 function addNewUserToDB(username, email, password) {
   userModel.create(
@@ -142,12 +140,12 @@ function addNewUserToDB(username, email, password) {
     },
     function (err, data) {
       if (err) {
-        printError(err)
+        printError(err);
       } else {
         console.log("New user account created: \n" + data);
         req.session.authenticated = true;
         req.session.username = username;
-        res.redirect('/')
+        res.redirect('/');
       }
       res.send(data);
     }
