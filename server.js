@@ -92,7 +92,14 @@ app.post("/login", function (req, res) {
 });
 
 app.get("/account", auth, function (req, res) {
-  res.render("account", { username: req.session.username });
+  userModel.findOne({ username: req.session.username }).then(function (result) {
+    const { username, email, added } = result;
+    res.render("account", {
+      username: username,
+      email: email,
+      added: added,
+    });
+  });
 });
 
 app.get("/register", function (req, res) {
@@ -110,7 +117,7 @@ app.post("/register", function (req, res) {
       printError(err);
     } else {
       if (result.length) {
-        console.log("User already exists");
+        // console.log("User already exists");
         res.render("newaccount", {
           email: email,
           message: "That username already exists!",
@@ -133,7 +140,7 @@ function addNewUserToDB(username, email, password, req, res) {
       if (err) {
         printError(err);
       } else {
-        console.log("New user account created: \n" + data);
+        // console.log("New user account created: \n" + data);
         req.session.authenticated = true;
         req.session.username = username;
         res.redirect("/account");
