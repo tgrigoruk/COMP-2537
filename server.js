@@ -1,13 +1,19 @@
+require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
+const bodyparser = require("body-parser");
+const cors = require("cors");
+
 const app = express();
 app.use(express.static("./public"));
 app.set("view engine", "ejs");
-
-const cors = require("cors");
-app.use(cors());
-
-const bodyparser = require("body-parser");
+app.use(
+  session({
+    secret: "Wf6hKgRx7kJ&g*ebC98A",
+    saveUninitialized: true,
+    resave: true,
+  })
+);
 app.use(
   bodyparser.urlencoded({
     parameterLimit: 100000,
@@ -15,29 +21,15 @@ app.use(
     extended: true,
   })
 );
+app.use(cors());
 
 const pokemonProfile = require("./src/pokemon");
-app.use("/pokemon", pokemonProfile);
-
 const timeline = require("./src/timeline");
-app.use("/timeline", timeline);
-
 const cart = require("./src/cart");
-app.use("/cart", cart);
-
-app.use(
-  session({
-    secret: "blahblahblah",
-    saveUninitialized: true,
-    resave: true,
-  })
-);
 
 //-------------------- MONGOOSE SETUP --------------------//
 
-require("dotenv").config();
 const mongoUri = process.env.MONGODB_URI;
-
 const mongoose = require("mongoose");
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
@@ -55,16 +47,22 @@ const userModel = mongoose.model("users", userSchema);
 function auth(req, res, next) {
   req.session.authenticated ? next() : res.redirect("/login");
 }
+app.use("/pokemon", auth, pokemonProfile);
+app.use("/timeline", auth, timeline);
+app.use("/cart", auth, cart);
+
 app.listen(process.env.PORT || 5001, function (err) {
   if (err) printError(err);
 });
 
 //-------------------- USER ACCOUNT ROUTES --------------------//
 
-var user;
-
 app.get("/", function (req, res) {
   res.render("main");
+});
+
+app.get("/game", function (req, res) {
+  res.render("game");
 });
 
 app.get("/login", function (req, res) {
@@ -76,33 +74,26 @@ app.get("/login", function (req, res) {
 
 app.post("/login", function (req, res) {
   const { username, password } = req.body;
-  userModel.find({ username: username, password: password }).then(function (result) {
-    if (result.length) {
-      req.session.authenticated = true;
-      req.session.username = username;
-      user = req.session;
-      res.redirect("/account");
-    } else {
-      req.session.authenticated = false;
-      res.render("login", {
-        username: username,
-        message: "Username or password invalid!",
-      });
-    }
-  });
+  userModel
+    .find({ username: username, password: password })
+    .then(function (result) {
+      if (result.length) {
+        req.session.authenticated = true;
+        req.session.username = username;
+        res.redirect("/account");
+      } else {
+        req.session.authenticated = false;
+        res.render("login", {
+          username: username,
+          message: "Username or password invalid!",
+        });
+      }
+    });
 });
 
-app.get("/account", function (req, res) {
-  console.log(user);
-  res.render("account", { username: user.username });
+app.get("/account", auth, function (req, res) {
+  res.render("account", { username: req.session.username });
 });
-
-function getUserIndex() {
-  for (let i = 0; i < users.length; i++) {
-    if ((users[i].username = req.session.username)) return i;
-  }
-  return -1;
-}
 
 app.get("/register", function (req, res) {
   res.render("newaccount", {
@@ -112,8 +103,6 @@ app.get("/register", function (req, res) {
 });
 
 app.post("/register", function (req, res) {
-  console.log(req.body);
-  user = req.session;
   const { username, email, password } = req.body;
   userModel.find({ username: username }, function (err, result) {
     console.log({ result });
@@ -127,12 +116,12 @@ app.post("/register", function (req, res) {
           message: "That username already exists!",
         });
       } else {
-        addNewUserToDB(username, email, password);
+        addNewUserToDB(username, email, password, req, res);
       }
     }
   });
 });
-function addNewUserToDB(username, email, password) {
+function addNewUserToDB(username, email, password, req, res) {
   userModel.create(
     {
       username: username,
@@ -145,11 +134,10 @@ function addNewUserToDB(username, email, password) {
         printError(err);
       } else {
         console.log("New user account created: \n" + data);
-        user.authenticated = true;
-        user.username = username;
-        res.redirect('/');
+        req.session.authenticated = true;
+        req.session.username = username;
+        res.redirect("/account");
       }
-      res.send(data);
     }
   );
 }

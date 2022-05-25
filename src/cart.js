@@ -1,14 +1,18 @@
+require("dotenv").config();
 const express = require("express");
 var router = express.Router();
 const session = require("express-session");
-const res = require("express/lib/response");
-const { compileETag } = require("express/lib/utils");
+router.use(
+  session({
+    secret: "Wf6hKgRx7kJ&g*ebC98A",
+    saveUninitialized: true,
+    resave: true,
+  })
+);
 
 //-------------------- MONGOOSE SETUP --------------------//
 
-require("dotenv").config();
 const mongoUri = process.env.MONGODB_URI;
-
 const mongoose = require("mongoose");
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
@@ -17,53 +21,65 @@ mongoose.connect(mongoUri, {
 
 const cartSchema = new mongoose.Schema({
   username: String,
-  cart: [{
-    name: String,
-    price: Number,
-    quantity: Number
-  }],
-  orderHistory: [{
-    total: Number,
-    time: Date,
-    items: [{
+  cart: [
+    {
       name: String,
       price: Number,
-      quantity: Number
-    }]
-  }],
+      quantity: Number,
+    },
+  ],
+  orderHistory: [
+    {
+      total: Number,
+      time: Date,
+      items: [
+        {
+          name: String,
+          price: Number,
+          quantity: Number,
+        },
+      ],
+    },
+  ],
 });
 const cartModel = mongoose.model("shoppingcarts", cartSchema);
-
 
 //-------------------- SHOPPING CART ROUTES --------------------//
 
 router.get("/add/:name/:price", function (req, res) {
-  let username = "test";
-  // const {username} = req.session
+  const username = req.session.username;
   const itemName = req.params.name;
   const itemPrice = parseInt(req.params.price);
-  console.log(`server.js route - name: ${itemName} , price: ${itemPrice}`);
 
-  cartModel.find({ username: username, "cart.name": itemName }, function (err, result) {
-    if (err) {
-      printError(err);
-    } else {
-      if (result.length) {
-        incrementItemQuantity(username, itemName, 1);
+  cartModel.find(
+    { username: username, "cart.name": itemName },
+    function (err, result) {
+      if (err) {
+        printError(err);
       } else {
-        addNewItemToCart(username, itemName, itemPrice);
+        if (result.length) {
+          incrementItemQuantity(username, itemName, 1);
+        } else {
+          addNewItemToCart(username, itemName, itemPrice);
+        }
       }
     }
-  });
+  );
 });
 async function incrementItemQuantity(username, itemName, amount) {
-  cartModel.updateOne(
-    { username: username, "cart.name": itemName },
-    {
-      $inc: { "cart.$.quantity": amount }
-    }).then(function (doc) {
+  cartModel
+    .updateOne(
+      { username: username, "cart.name": itemName },
+      {
+        $inc: { "cart.$.quantity": amount },
+      }
+    )
+    .then(function (doc) {
       // log(doc);
-    }).catch(function (err) { printError(err); });
+    })
+    .catch(function (err) {
+      printError(err);
+    });
 }
 function addNewItemToCart(username, itemName, itemPrice) {
   const newCartItem = { name: itemName, price: itemPrice, quantity: 1 };
@@ -80,7 +96,7 @@ function addNewItemToCart(username, itemName, itemPrice) {
     }
   );
 }
-function removeItemFromCart(itemName) {
+function removeItemFromCart(username, itemName) {
   cartModel.updateOne(
     {
       username: username,
@@ -95,10 +111,10 @@ function removeItemFromCart(itemName) {
       }
     }
   );
-};
+}
 
 router.get("/quantity/:name/:amount", async function (req, res) {
-  // log(req.params);
+  const username = req.session.username;
   let { name, amount } = req.params;
   amount = parseInt(amount);
   if (amount) {
@@ -111,65 +127,79 @@ router.get("/quantity/:name/:amount", async function (req, res) {
           printError(err);
         } else {
           const quantity = data.cart[0].quantity;
-          if (quantity < 1) removeItemFromCart(name);
+          if (quantity < 1) removeItemFromCart(username, name);
           res.send({ quantity: quantity });
         }
-      });
-  }
-  else {
-    removeItemFromCart(name);
+      }
+    );
+  } else {
+    removeItemFromCart(username, name);
     res.send({ quantity: 0 });
   }
 });
 
 router.get("/empty", function (req, res) {
-  cartModel.updateOne(
-    { username: username },
-    {
-      $set: { cart: [] }
-    }).then(function (doc) {
+  const username = req.session.username;
+  cartModel
+    .updateOne(
+      { username: username },
+      {
+        $set: { cart: [] },
+      }
+    )
+    .then(function (doc) {
       res.send("Cart emptied");
-    }).catch(function (err) { printError(err); });
+    })
+    .catch(function (err) {
+      printError(err);
+    });
 });
 
-
 router.get("/view", function (req, res) {
-  res.render('cart');
+  res.render("cart");
 });
 
 router.get("/getCart", function (req, res) {
-  cartModel.findOne({ username: username }, function (err, response) {
+  const username = req.session.username;
+  cartModel.findOne({ username: username }, function (err, data) {
     if (err) {
       printError(err);
     } else {
-      res.send(response.cart);
+      if (data) res.send(data.cart);
     }
   });
 });
 
 router.post("/checkout", async function (req, res) {
+  const username = req.session.username;
   const { total, time } = req.body;
-  const cart = await cartModel.findOne({ username: username }).then(function (data) {
-    const order = { time: time, total: total, items: data.cart };
-    // log(order);
-    cartModel.updateOne(
-      { username: username },
-      { $push: { orderHistory: order } },
-      { upsert: true },
-      function (err, pushResponse) {
-        if (err) {
-          printError(err);
-        } else {
-          res.send("Order checkout out");
+  const cart = await cartModel
+    .findOne({ username: username })
+    .then(function (data) {
+      const order = { time: time, total: total, items: data.cart };
+      // log(order);
+      cartModel.updateOne(
+        { username: username },
+        { $push: { orderHistory: order } },
+        { upsert: true },
+        function (err, pushResponse) {
+          if (err) {
+            printError(err);
+          } else {
+            res.send("Order checkout out");
+          }
         }
-      });
-  });
+      );
+    });
 });
 
 router.get("/orderHistory", async function (req, res) {
-  const histroy = await cartModel.findOne({ username: username }).then(function (data) {
-    res.send(data.orderHistory);
-  });
+  const username = req.session.username;
+  const histroy = await cartModel
+    .findOne({ username: username })
+    .then(function (data) {
+      if (data) res.send(data.orderHistory);
+    });
 });
 
 //-------------------- HELPER FUNCTIONS --------------------//
