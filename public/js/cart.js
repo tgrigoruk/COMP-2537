@@ -28,7 +28,9 @@ async function loadCartItems() {
           );
         }
       } else {
-        $("#cart-items").append(`<p id="cart-empty">Cart is currently empty</p>`);
+        $("#cart-items").append(
+          `<p id="cart-empty">Cart is currently empty</p>`
+        );
       }
     },
   });
@@ -36,7 +38,7 @@ async function loadCartItems() {
 }
 
 async function addToCart(name, base_xp) {
-  // console.log(name)
+  console.log(name, base_xp);
   await $.ajax({
     url: `/cart/add/${name}/${base_xp}`,
     type: "GET",
@@ -48,7 +50,9 @@ async function addToCart(name, base_xp) {
 }
 
 async function changeQuantity(name, amount) {
-  const currQuantity = amount ? parseInt($(`#${name}-quantity`).text()) + amount : 0;
+  const currQuantity = amount
+    ? parseInt($(`#${name}-quantity`).text()) + amount
+    : 0;
   await $.ajax({
     url: `/cart/quantity/${name}/${amount}`,
     type: "GET",
@@ -69,7 +73,6 @@ async function changeQuantity(name, amount) {
   createTotals();
 }
 
-
 async function emptyCart() {
   // empty entire cart
   await $.ajax({
@@ -86,10 +89,10 @@ async function emptyCart() {
 
 function createTotals() {
   // currency code from https://flaviocopes.com/how-to-format-number-as-currency-javascript/
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
   });
   // end currency code
   let pokemonNumber = 0;
@@ -126,14 +129,13 @@ async function checkout() {
     type: "POST",
     data: {
       total: total,
-      time: time.toISOString()
+      time: time.toISOString(),
     },
     success: (res) => {
       emptyCart();
     },
   });
 }
-
 
 function capitalize(text) {
   return text[0].toUpperCase() + text.slice(1);

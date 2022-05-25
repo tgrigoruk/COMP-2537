@@ -69,20 +69,26 @@ nav a:hover {
 }
 
 footer {
-  position: absolute;
+  position: relative;
   bottom: 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 #footer-text {
   color: hsl(194, 57%, 70%);
-  width: 100%;
+  background-color: hsla(166, 100%, 95%, 0.9);
+  width: fit-content;
+  padding: 0.25em 0.5em;
+  border-radius: 8px;
   text-align: center;
   font-size: 18px;
   font-weight: 100;
 }
 
 @media screen and (max-width: 460px) {
+
   nav,
   #nav-left {
     flex-direction: column;

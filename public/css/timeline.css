@@ -9,7 +9,7 @@
 
 main {
   margin-top: 30px;
-  height: 80%;
+  height: 75%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -18,7 +18,7 @@ main {
 }
 
 .history-container {
-  margin-top: 30px;
+  margin-top: 10px;
   height: 50%;
   width: clamp(450px, 80%, 800px);
   padding: 20px;
@@ -38,10 +38,12 @@ main {
 .event {
   margin: 0.5em;
 }
+
 .event-hit-counter,
 .event-time {
   color: rgb(60, 60, 199);
 }
+
 #no-events {
   margin: 1em;
   text-align: center;

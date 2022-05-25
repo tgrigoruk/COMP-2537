@@ -34,7 +34,7 @@ function makePokemonCard(pokemon) {
     <div class="pokemon_card">
       <div class="card_header">
         <h3 class="pokemon_id">#${pokemon.id}</h3>
-        <button type="button" class="add-button" onclick=addToCart("${pokemon.name}",${pokemon.base_experience})>add</button>
+        <button type="button" class="add-button" onclick=addToCart("${pokemon.name}",${pokemon.base_experience})>ADD</button>
       </div>
       <a href="/pokemon/profile/${pokemon.id}" onclick="profileViewed('${pokemonName}')"> 
       <div class="image_container">
