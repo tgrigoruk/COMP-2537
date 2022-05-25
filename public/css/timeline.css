@@ -28,7 +28,8 @@ main {
 
 #events,
 #orders {
-  height: 90%;
+  /* height: 90%; */
+  height: clamp(161px, fit-content, 300px);
   background-color: white;
   border: 2px solid gray;
   /* border-radius: 15px; */

@@ -12,16 +12,18 @@ main {
   align-items: center;
   gap: 30px;
 }
+
 #cart-title h2 {
   padding-top: 5px;
 }
+
 #empty-cart {
   color: red;
   justify-self: flex-end;
 }
 
 #cart-container {
-  height: 66%;
+  height: 75%;
   width: clamp(350px, 80%, 600px);
   /* display: flex; */
   border-radius: 15px;
@@ -32,17 +34,20 @@ main {
   display: grid;
   grid-template-rows: 3em auto 100px;
 }
+
 #cart-items {
   background-color: white;
   height: 100%;
   overflow: scroll;
 }
+
 .cart-item {
   padding: 0.5em 1em;
   display: grid;
   grid-template-columns: 5fr 2fr 5fr;
   font-size: 14px;
 }
+
 #cart-header {
   padding: 0.5em 1em;
   display: grid;
@@ -52,12 +57,15 @@ main {
   background-color: hsl(277, 100%, 97%);
   border-bottom: solid 6px hsl(277, 100%, 93%);
 }
+
 .row-even {
   background-color: hsl(212, 10%, 94%);
 }
+
 .row-odd {
   background-color: hsl(212, 10%, 97%);
 }
+
 .quantity-container {
   display: flex;
   justify-content: flex-end;
@@ -69,6 +77,7 @@ main {
   text-align: center;
   color: rgb(65, 65, 229);
 }
+
 #cart-empty {
   margin: 1em;
   text-align: center;
@@ -78,6 +87,7 @@ main {
 #cart-container button {
   font-size: 10px;
 }
+
 .quantity-button {
   font-weight: bold;
 }
@@ -90,12 +100,15 @@ main {
   grid-template: repeat(4, 1fr) / auto auto;
   /* background-color: hsl(277, 100%, 93%); */
 }
+
 #cart-summary p {
   padding: 2px 1em;
 }
+
 #cart-summary span {
   text-align: end;
 }
+
 .total {
   font-weight: bold;
   border-radius: 5px;

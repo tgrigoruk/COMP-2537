@@ -71,8 +71,8 @@ function deleteEvent(id) {
     url: `/timeline/remove/${id}`,
     type: "GET",
     success: () => {
-      // $(`#${id}`).remove();
-      loadEvents();
+      $(`#${id}`).remove();
+      // loadEvents();
     },
   });
 }

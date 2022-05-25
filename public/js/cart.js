@@ -43,7 +43,7 @@ async function addToCart(name, base_xp) {
     url: `/cart/add/${name}/${base_xp}`,
     type: "GET",
     success: (res) => {
-      console.log({ res });
+      // console.log({ res });
     },
   });
   createTotals();
@@ -62,12 +62,6 @@ async function changeQuantity(name, amount) {
       } else {
         $(`#item-${name}`).remove();
       }
-
-      // if (res.quantity > 0) {
-      //   $(`#${name}-quantity`).text(res.quantity);
-      // } else {
-      //   $(`#item-${name}`).remove();
-      // }
     },
   });
   createTotals();
@@ -79,7 +73,7 @@ async function emptyCart() {
     url: `/cart/empty`,
     type: "GET",
     success: (res) => {
-      console.log({ res });
+      // console.log({ res });
       $("#cart-items").empty();
       $("#cart-items").append(`<p id="cart-empty">Cart is currently empty</p>`);
     },
