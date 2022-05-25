@@ -20,9 +20,13 @@
     <header><%- include('partials/header.ejs') %></header>
     <main>
       <div id="left">
-        <h2><%= name %></h2>
+        <h2 id="pokemon-name"><%= name %></h2>
         <div id="main-img">
           <img src="<%= img %>" alt="<%= name %> image" />
+        </div>
+        <div id="left-footer">
+        <h2 id="pokemon-price">$<%= stats.base_xp %></h2>
+        <button type="button" class="add-button">ADD</button>
         </div>
       </div>
       <div id="right">
@@ -83,5 +87,11 @@
       </div>
     </main>
       <%- include('partials/footer.ejs') %>
+      <script>
+        $(".add-button").on("click", ()=>{
+          addToCart('<%= name %>', <%= stats.base_xp %>)
+        })
+      </script>
+      <script src="/js/cart.js"></script>
   </body>
 </html>
