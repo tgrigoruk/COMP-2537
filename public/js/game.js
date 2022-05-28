@@ -1,5 +1,6 @@
 const pokeapiUrl = "https://pokeapi.co/api/v2/";
 const pokemonCardsActive = {};
+const time = new Date();
 
 function createShuffledListOfPairs(numOfPokemon, gridsize) {
   let arr = [];
@@ -31,7 +32,6 @@ async function createBoard() {
 
   $("#game-grid").empty();
   let pokemonList = createShuffledListOfPairs(numOfPokemon, rows * cols);
-  console.log(pokemonList);
   for (let i = 0; i < rows * cols; i++) {
     await $.ajax({
       type: "GET",
@@ -69,6 +69,7 @@ function game() {
   // start timer after first card selected
   if (!gameHasBegun) {
     gameHasBegun = true;
+    logEvent(`Started a ${$("#game-difficulty option:selected").text()} game`);
     let timeInSeconds = parseInt($("#game-difficulty").val());
     gameTimer = setInterval(timer, 1000);
     function timer() {
@@ -77,10 +78,12 @@ function game() {
         timeInSeconds -= 1;
       } else {
         clearInterval(gameTimer);
-        deactivateCards(pokemonCardsActive);
-        $("#win-text").text("You've run out of time!");
+        deactivateAllCards();
+        $("#win-text").text("Time's up!");
+        logEvent(`Lost a ${$("#game-difficulty option:selected").text()} game`);
       }
     }
+    disableGameSettings();
   }
 
   // flip the card and disable all cards
@@ -116,8 +119,9 @@ function game() {
   }
   if (matches == 3) {
     clearInterval(gameTimer);
+    deactivateAllCards();
     $("#win-text").text("Congrats, you won!");
-    deactivateCards(pokemonCardsActive);
+    logEvent(`Won a ${$("#game-difficulty option:selected").text()} game`);
   }
 
   console.log({ pokemonCardsActive });
@@ -129,9 +133,28 @@ function game() {
   }, 501);
 }
 
-function deactivateCards(cards) {
-  for (key of Object.keys(cards)) {
-    cards[key] = false;
+function logEvent(text) {
+  $.ajax({
+    url: `/timeline/insert`,
+    type: "POST",
+    data: {
+      text: text,
+      time: time.toLocaleTimeString(),
+    },
+    success: () => {
+      console.log(`Added to timeline: ${text}`);
+    },
+  });
+}
+
+function disableGameSettings() {
+  $("#game-difficulty").prop("disabled", true);
+  $("#game-dims").prop("disabled", true);
+  $("#game-pokemons").prop("disabled", true);
+}
+function deactivateAllCards() {
+  for (key of Object.keys(pokemonCardsActive)) {
+    pokemonCardsActive[key] = false;
   }
 }
 
