@@ -26,11 +26,11 @@
     <main>
       <section id="game-settings">
         <div class="setting">
-          <label for="game-difficulty">Difficulty Level</label>
+          <label for="game-difficulty">Difficulty</label>
           <select name="game-difficulty" id="game-difficulty">
-            <option value="5" selected>Easy</option>
-            <option value="3">Moderate</option>
-            <option value="1">Hard</option>
+            <option value="120" selected>Easy</option>
+            <option value="60">Moderate</option>
+            <option value="30">Hard</option>
           </select>
         </div>
         <div class="setting">
@@ -39,6 +39,7 @@
             <option value="3">3 x 4</option>
             <option value="4" selected>4 x 4</option>
             <option value="5">5 x 4</option>
+            <option value="6">6 x 6</option>
           </select>
         </div>
         <div class="setting">
@@ -51,8 +52,13 @@
           </select>
         </div>
       </section>
-      <div id="timer-container">
-        <h1 id="timer-display"></h1>
+      <div id="game-status-container">
+        <h3>
+          Time left:
+          <span id="timer-display" class="status-display"></span> Matches:
+          <span id="matches-display" class="status-display">0</span>
+        </h3>
+        <h2 id="win-text"></h2>
       </div>
       <div id="game-grid"></div>
     </main>

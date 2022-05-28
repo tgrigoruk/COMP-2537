@@ -1,24 +1,24 @@
 const pokeapiUrl = "https://pokeapi.co/api/v2/";
+const pokemonCardsActive = {};
 
-let pokemonCardsActive = {};
 async function createBoard() {
-  const cols = 4;
   const rows = parseInt($("#game-dims").val());
+  const cols = rows == 6 ? 6 : 4;
+
   const numOfPokemon = parseInt($("#game-pokemons").val());
-  const difficulty = parseInt($("#game-difficulty").val());
-  console.log({
-    rows: rows,
-    cols: cols,
-    pokemon: numOfPokemon,
-    difficulty: difficulty,
-  });
+  const timelimit = $("#game-difficulty").val();
+  displayTime(timelimit);
+  // console.log({
+  //   rows: rows,
+  //   cols: cols,
+  //   pokemon: numOfPokemon,
+  //   difficulty: difficulty,
+  // });
 
-  $("#game-grid").empty();
   let pokemonList = [];
-  let pokemonImage = "";
-
   for (p = 0; p < numOfPokemon; p++) {
     let randomPokemon = Math.trunc(Math.random() * 900);
+    let pokemonImage = "";
     await $.ajax({
       type: "GET",
       url: `${pokeapiUrl}pokemon/${randomPokemon}`,
@@ -28,6 +28,8 @@ async function createBoard() {
     });
     pokemonList.push(pokemonImage);
   }
+
+  $("#game-grid").empty();
   for (i = 0; i < rows * cols; i++) {
     pokemonCardsActive[`card-${i}`] = true;
     let thisPokemon = Math.trunc(Math.random() * numOfPokemon);
@@ -40,9 +42,12 @@ async function createBoard() {
       `
     );
   }
-  $("#game-grid").css(" grid-template-rows", `repeat(${cols}, 1fr)`);
+  $("#game-grid").css(
+    "grid-template",
+    `repeat(${rows}, 1fr) / repeat(${cols}, 1fr)`
+  );
+  $("#game-grid").css("aspect-ratio", `${cols}/${rows} `);
   $(".game-card").on("click", game);
-  $("#timer-display").text(`${Math.trunc(6 / difficulty)}:00`);
 }
 
 firstCard = undefined;
@@ -51,16 +56,10 @@ cardHasBeenFlipped = false;
 matches = 0;
 gameHasBegun = false;
 
-// corner cases:
-// if click same card twice
-// after match prevent clicking on those cards
-//  print message when 3 matches made
-// grab images randomly from API
-// timer for games 2 mins
-
 function game() {
   if (!gameHasBegun) {
-    startTimer();
+    let timeInSeconds = parseInt($("#game-difficulty").val());
+    startTimer(timeInSeconds);
     gameHasBegun = true;
   }
   $(this).toggleClass("flip");
@@ -81,6 +80,7 @@ function game() {
     ) {
       console.log("Match!");
       matches++;
+      $("#matches-display").text(matches);
       pokemonCardsActive[firstCard.id] = false;
       pokemonCardsActive[secondCard.id] = false;
     } else {
@@ -94,7 +94,8 @@ function game() {
     }
   }
   if (matches == 3) {
-    alert("You win the game!");
+    // alert("You win the game!");
+    $("#win-text").text("Congrats, you won!");
     for (key of Object.keys(pokemonCardsActive)) {
       pokemonCardsActive[key] = false;
     }
@@ -107,13 +108,24 @@ function game() {
   }, 501);
 }
 
-function startTimer() {
-  // let timer = duration, mins, secs;
-  // const minutes = parseInt($("#game-difficulty").val());
-  // const display = $("#timer-display");
-  // setInterval(function(){
-  //   display.textContent =
-  // })
+function startTimer(timeInSeconds) {
+  const gameTimer = setInterval(timer, 1000);
+  function timer() {
+    displayTime(timeInSeconds);
+    if (timeInSeconds) {
+      timeInSeconds -= 1;
+    } else {
+      clearInterval(gameTimer);
+      alert("You've run out of time!");
+    }
+  }
+}
+
+function displayTime(time) {
+  let minutes = Math.trunc(time / 60);
+  let seconds = time % 60;
+  seconds = seconds < 10 ? `0${seconds}` : seconds;
+  $("#timer-display").text(`${minutes}:${seconds}`);
 }
 
 function setup() {
