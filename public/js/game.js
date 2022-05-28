@@ -1,10 +1,24 @@
 const pokeapiUrl = "https://pokeapi.co/api/v2/";
 const pokemonCardsActive = {};
 
+function createShuffledListOfPairs(numOfPokemon, gridsize) {
+  let arr = [];
+  for (p = 0; p < numOfPokemon; p++) arr.push(Math.trunc(Math.random() * 900));
+  while (arr.length < gridsize / 2) arr = arr.concat(arr);
+  arr = arr.slice(0, gridsize / 2);
+  arr = arr.concat(arr);
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * i);
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+  return arr;
+}
+
 async function createBoard() {
   const rows = parseInt($("#game-dims").val());
   const cols = rows == 6 ? 6 : 4;
-
   const numOfPokemon = parseInt($("#game-pokemons").val());
   const timelimit = $("#game-difficulty").val();
   displayTime(timelimit);
@@ -15,32 +29,26 @@ async function createBoard() {
   //   difficulty: difficulty,
   // });
 
-  let pokemonList = [];
-  for (p = 0; p < numOfPokemon; p++) {
-    let randomPokemon = Math.trunc(Math.random() * 900);
-    let pokemonImage = "";
+  $("#game-grid").empty();
+  let pokemonList = createShuffledListOfPairs(numOfPokemon, rows * cols);
+  console.log(pokemonList);
+  for (let i = 0; i < rows * cols; i++) {
     await $.ajax({
       type: "GET",
-      url: `${pokeapiUrl}pokemon/${randomPokemon}`,
+      url: `${pokeapiUrl}pokemon/${pokemonList[i]}`,
       success: (pokemon) => {
         pokemonImage = pokemon.sprites.other["official-artwork"].front_default;
-      },
-    });
-    pokemonList.push(pokemonImage);
-  }
-
-  $("#game-grid").empty();
-  for (i = 0; i < rows * cols; i++) {
-    pokemonCardsActive[`card-${i}`] = true;
-    let thisPokemon = Math.trunc(Math.random() * numOfPokemon);
-    $("#game-grid").append(
-      `
+        $("#game-grid").append(
+          `
         <div class="game-card">
-          <img class="card-face" id="card-${i}" src="${pokemonList[thisPokemon]}" alt="" />
+          <img class="card-face" id="card-${i}" src="${pokemonImage}" alt="" />
           <img class="card-back" src="/images/ball.png" alt="" />
         </div>
       `
-    );
+        );
+        pokemonCardsActive[`card-${i}`] = true;
+      },
+    });
   }
   $("#game-grid").css(
     "grid-template",
@@ -55,16 +63,29 @@ secondCard = undefined;
 cardHasBeenFlipped = false;
 matches = 0;
 gameHasBegun = false;
+var gameTimer;
 
 function game() {
+  // start timer after first card selected
   if (!gameHasBegun) {
-    let timeInSeconds = parseInt($("#game-difficulty").val());
-    startTimer(timeInSeconds);
     gameHasBegun = true;
+    let timeInSeconds = parseInt($("#game-difficulty").val());
+    gameTimer = setInterval(timer, 1000);
+    function timer() {
+      displayTime(timeInSeconds);
+      if (timeInSeconds) {
+        timeInSeconds -= 1;
+      } else {
+        clearInterval(gameTimer);
+        deactivateCards(pokemonCardsActive);
+        $("#win-text").text("You've run out of time!");
+      }
+    }
   }
+
+  // flip the card and disable all cards
   $(this).toggleClass("flip");
   $(".game-card").off("click");
-  console.log($(this).find(".card-face")[0].id);
 
   if (!cardHasBeenFlipped) {
     firstCard = $(this).find(".card-face")[0];
@@ -94,13 +115,13 @@ function game() {
     }
   }
   if (matches == 3) {
-    // alert("You win the game!");
+    clearInterval(gameTimer);
     $("#win-text").text("Congrats, you won!");
-    for (key of Object.keys(pokemonCardsActive)) {
-      pokemonCardsActive[key] = false;
-    }
+    deactivateCards(pokemonCardsActive);
   }
 
+  console.log({ pokemonCardsActive });
+  //re-enable cards still in play after a cool-down period
   setTimeout(() => {
     for (const [key, value] of Object.entries(pokemonCardsActive)) {
       if (value) $(`#${key}`).parent().on("click", game);
@@ -108,16 +129,9 @@ function game() {
   }, 501);
 }
 
-function startTimer(timeInSeconds) {
-  const gameTimer = setInterval(timer, 1000);
-  function timer() {
-    displayTime(timeInSeconds);
-    if (timeInSeconds) {
-      timeInSeconds -= 1;
-    } else {
-      clearInterval(gameTimer);
-      alert("You've run out of time!");
-    }
+function deactivateCards(cards) {
+  for (key of Object.keys(cards)) {
+    cards[key] = false;
   }
 }
 
