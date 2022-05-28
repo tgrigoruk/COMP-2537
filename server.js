@@ -41,12 +41,21 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   added: String,
+  admin: Boolean,
 });
 const userModel = mongoose.model("users", userSchema);
 
 function auth(req, res, next) {
   req.session.authenticated ? next() : res.redirect("/login");
 }
+function admin(req, res, next) {
+  req.session.admin
+    ? next()
+    : res.send(
+        `<p style="font-family:monospace">You are not authorized to access that page.<p>`
+      );
+}
+
 app.use("/pokemon", auth, pokemonProfile);
 app.use("/timeline", auth, timeline);
 app.use("/cart", auth, cart);
@@ -148,3 +157,16 @@ function addNewUserToDB(username, email, password, req, res) {
     }
   );
 }
+
+// add middleware: auth, admin,
+app.get("/admin", function (req, res) {
+  // userModel.find().then((users) => {
+  res.render("admin");
+  // });
+});
+
+app.get("/getAllUsers", function (req, res) {
+  userModel.find().then((users) => {
+    res.send(users);
+  });
+});

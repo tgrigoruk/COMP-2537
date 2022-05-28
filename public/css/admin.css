@@ -1,0 +1,69 @@
+body {
+  height: auto !important;
+}
+
+h3 {
+  font-size: smaller;
+}
+
+main {
+  margin-top: 30px;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+}
+
+#user-list-container {
+  width: clamp(450px, 80%, 800px);
+  height: clamp(161px, fit-content, 300px);
+
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 2px solid gray;
+  overflow: scroll;
+}
+
+#user-list {}
+
+.order-row,
+.order-items {
+  padding: 1em;
+}
+
+.row-even {
+  background-color: hsl(212, 10%, 94%);
+}
+
+.row-odd {
+  background-color: hsl(212, 10%, 97%);
+}
+
+#user-list-header {
+  padding: 0.5em;
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr 2fr;
+}
+
+#user-list-header * {
+  text-align: left;
+  font-size: 18px;
+}
+
+.user {
+  padding: 0.5em;
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr 1fr 1fr;
+}
+
+button {
+  width: fit-content;
+  margin: 0 0.5em;
+}
+
+.delete-button {
+  color: red;
+}
