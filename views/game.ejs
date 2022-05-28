@@ -25,87 +25,36 @@
     <%- include('partials/header.ejs') %>
     <main>
       <section id="game-settings">
-        <label for="game_dims">Game Dimensions</label>
-        <select name="game_dims" id="game_dims">
-          <option value="3">3 x 4</option>
-          <option value="4">4 x 4</option>
-          <option value="5">5 x 4</option>
-        </select>
-        <label for="game_dims">Number of Pokemon</label>
-        <select name="game_dims" id="game_dims">
-          <option value="3">3</option>
-        </select>
+        <div class="setting">
+          <label for="game-difficulty">Difficulty Level</label>
+          <select name="game-difficulty" id="game-difficulty">
+            <option value="5" selected>Easy</option>
+            <option value="3">Moderate</option>
+            <option value="1">Hard</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label for="game-dims">Dimensions</label>
+          <select name="game-dims" id="game-dims">
+            <option value="3">3 x 4</option>
+            <option value="4" selected>4 x 4</option>
+            <option value="5">5 x 4</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label for="game-pokemons">Pokemons</label>
+          <select name="game-pokemons" id="game-pokemons">
+            <option value="2">2</option>
+            <option value="4" selected>4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+          </select>
+        </div>
       </section>
-
-      <!-- <div id="game-grid-container"> -->
-      <div id="game-grid">
-        <!--         
-        <div class="game-card">
-          <img class="card-face" id="card-1" src="/images/1.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-2" src="/images/2.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-3" src="/images/3.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-4" src="/images/1.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-5" src="/images/2.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-6" src="/images/3.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-7" src="/images/1.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-8" src="/images/2.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-9" src="/images/3.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-10" src="/images/1.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-11" src="/images/2.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-12" src="/images/3.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-13" src="/images/1.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-14" src="/images/2.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-15" src="/images/3.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div>
-        <div class="game-card">
-          <img class="card-face" id="card-16" src="/images/3.png" alt="" />
-          <img class="card-back" src="/images/ball.png" alt="" />
-        </div> -->
+      <div id="timer-container">
+        <h1 id="timer-display"></h1>
       </div>
-      <!-- </div> -->
+      <div id="game-grid"></div>
     </main>
     <%- include('partials/footer.ejs') %>
   </body>
