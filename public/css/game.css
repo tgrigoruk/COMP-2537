@@ -1,7 +1,18 @@
 main {
     height: 80%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+}
+
+#game-settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-settings select {
+    margin: 1em;
 }
 
 #game-grid {
