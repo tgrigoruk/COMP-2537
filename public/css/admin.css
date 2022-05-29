@@ -17,9 +17,35 @@ main {
 }
 
 form {
+  padding: 1em;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  background-color: rgb(221, 221, 221);
+  border: 2px solid gray;
+  border-radius: 10px;
+}
+
+form>* {
+  margin: 0.25em;
+}
+
+#text-inputs {
+  margin: 0.25em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#text-inputs label {
+  width: 50px;
+  margin-bottom: 0.25em;
+}
+
+#update-database-button {
+  font-size: 16px;
+  margin-top: 1em;
+  align-self: center;
 }
 
 #user-list-container {
@@ -34,6 +60,10 @@ form {
 }
 
 #user-list {}
+
+.selected-row {
+  background-color: rgb(248, 162, 162) !important;
+}
 
 .order-row,
 .order-items {

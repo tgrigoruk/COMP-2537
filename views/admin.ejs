@@ -24,39 +24,68 @@
   <body>
     <header><%- include('partials/header.ejs') %></header>
     <main>
-      <h2>Admin Page – User List</h2>
+      <h2>Admin Page – Add/Update Users</h2>
       <form id="new-user-form">
         <form id="update-user-form" action="/updateDatabase" method="POST">
-          <p id="errorMessage"></p>
-          <label for="username">
+          <!-- <p id="errorMessage"></p> -->
+          <div id="text-inputs">
+            <label for="username">
+              username
+              <input
+                type="text"
+                placeholder="Username"
+                id="username"
+                name="username"
+                required
+              />
+            </label>
+            <label for="email">
+              email
+              <input
+                type="text"
+                placeholder="Email"
+                id="email"
+                name="email"
+                required
+              />
+            </label>
+            <label for="password">
+              password
+
+              <input
+                type="text"
+                placeholder="Password"
+                name="password"
+                id="password"
+                required
+              />
+            </label>
+          </div>
+          <label for="add-user">
             <input
-              type="text"
-              placeholder="Username"
-              id="username"
-              name="username"
-              required
+              type="radio"
+              name="addOrUpdate"
+              id="add-user"
+              value="add"
+              checked
             />
+            add new user
           </label>
-          <label for="email">
+
+          <label for="update-user">
             <input
-              type="text"
-              placeholder="Email"
-              id="email"
-              name="email"
-              required
+              type="radio"
+              name="addOrUpdate"
+              id="update-user"
+              value="update"
             />
-          </label>
-          <label for="password">
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              id="password"
-              required
-            />
-          </label>
-          <input id="update-database" type="submit" value="update user" />
-          <button class="add-user" onclick="">add new user</button>
+            update selected user</label
+          >
+          <input
+            id="update-database-button"
+            type="submit"
+            value="update database"
+          />
         </form>
       </form>
       <div id="user-list-container">

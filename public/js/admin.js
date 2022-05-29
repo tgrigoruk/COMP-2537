@@ -30,17 +30,27 @@ function loadUsers() {
   });
 }
 function editUser(id) {
-  $.ajax({
-    url: `/getUser/${id}`,
-    type: "GET",
-    success: (user) => {
-      console.log(user);
-      $("#username").val(user.username);
-      $("#email").val(user.email);
-      $("#password").val(user.password);
-      $("#update-user-form").attr("action", `/updateUser/${id}`);
-    },
-  });
+  if ($(`#${id}`).hasClass("selected-row")) {
+    $(`#${id}`).removeClass("selected-row");
+    $("#add-user").prop("checked", true);
+    $("#update-user").prop("disabled", true);
+  } else {
+    $.ajax({
+      url: `/getUser/${id}`,
+      type: "GET",
+      success: (user) => {
+        // console.log(user);
+        $("#username").val(user.username);
+        $("#email").val(user.email);
+        $("#password").val(user.password);
+        // $("#update-user-form").attr("action", `/updateUser/${id}`);
+        $(".user").removeClass("selected-row");
+        $(`#${id}`).addClass("selected-row");
+        $("#update-user").prop("disabled", false);
+        $("#update-user").prop("checked", true);
+      },
+    });
+  }
 }
 
 function deleteUser(id) {
