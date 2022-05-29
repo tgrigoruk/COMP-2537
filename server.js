@@ -129,7 +129,6 @@ app.get("/register", function (req, res) {
 app.post("/register", function (req, res) {
   const { username, email, password } = req.body;
   userModel.find({ username: username }, function (err, result) {
-    console.log({ result });
     if (err) {
       printError(err);
     } else {
@@ -140,12 +139,15 @@ app.post("/register", function (req, res) {
           message: "That username already exists!",
         });
       } else {
-        addNewUserToDB(username, email, password, req, res);
+        addNewUserToDB(username, email, password);
+        req.session.authenticated = true;
+        req.session.username = username;
+        res.redirect("/account");
       }
     }
   });
 });
-function addNewUserToDB(username, email, password, req, res) {
+function addNewUserToDB(username, email, password, admin = false) {
   var time = new Date();
   userModel.create(
     {
@@ -153,15 +155,13 @@ function addNewUserToDB(username, email, password, req, res) {
       email: email,
       password: password,
       added: time.toLocaleDateString(),
+      admin: admin,
     },
     function (err, data) {
       if (err) {
         printError(err);
       } else {
-        // console.log("New user account created: \n" + data);
-        req.session.authenticated = true;
-        req.session.username = username;
-        res.redirect("/account");
+        console.log("New user account created: \n" + data);
       }
     }
   );
@@ -170,7 +170,7 @@ function addNewUserToDB(username, email, password, req, res) {
 // add middleware: auth, admin,
 app.get("/admin", function (req, res) {
   // userModel.find().then((users) => {
-  res.render("admin");
+  res.render("admin", { message: "" });
   // });
 });
 
@@ -182,12 +182,52 @@ app.get("/getUser/:id", function (req, res) {
 
 app.get("/getAllUsers", function (req, res) {
   userModel.find().then((users) => {
-    res.send(users);
+    res.send({ currentUser: req.session.username, userList: users });
   });
 });
 
 app.get("/deleteUser/:id", function (req, res) {
   userModel.deleteOne({ _id: req.params.id }).then((data) => {
-    res.send("Deleted");
+    res.send(data);
   });
+});
+
+app.post("/updateDatabase", function (req, res) {
+  const { username, email, password, addOrUpdate, admin } = req.body;
+  let isAdmin = admin ? true : false;
+  console.log(req.body);
+
+  if (addOrUpdate == "add") {
+    userModel.find({ username: username }, function (err, result) {
+      if (err) {
+        printError(err);
+      } else {
+        if (result.length) {
+          // console.log("User already exists");
+          res.render("admin", {
+            message: "User already exists!",
+          });
+        } else {
+          addNewUserToDB(username, email, password, isAdmin);
+          res.render("admin", {
+            message: "User added!",
+          });
+        }
+      }
+    });
+  } else {
+    userModel.updateOne(
+      { username: username },
+      { username: username, email: email, password: password, admin: isAdmin },
+      function (err, result) {
+        if (err) {
+          printError(err);
+        } else {
+          res.render("admin", {
+            message: "User updated!",
+          });
+        }
+      }
+    );
+  }
 });
