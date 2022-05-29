@@ -2,6 +2,7 @@ const pokeapiUrl = "https://pokeapi.co/api/v2/";
 
 function loadDropdowns() {
   ["type", "ability", "pokemon-color"].forEach((searchType) => {
+    // poppulate dropdown menus
     $.ajax({
       type: "GET",
       url: `https://pokeapi.co/api/v2/${searchType}/`,
@@ -10,10 +11,11 @@ function loadDropdowns() {
         data.results.forEach((result) => {
           options += `<option value=${result.url}>${result.name}</option>`;
         });
-        if (searchType == "pokemon-color") searchType = "color";
+        // if (searchType == "pokemon-color") searchType = "color";
         $(`#pokemon_${searchType}`).html(options);
       },
     });
+
     $(`#pokemon_${searchType}`)
       .change(async function () {
         let searchValue = $(`#pokemon_${searchType} option:selected`).text();

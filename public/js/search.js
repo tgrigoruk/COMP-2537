@@ -20,20 +20,6 @@ async function searchPokemons(searchUrl) {
     },
   });
 }
-// async function searchPokemons(searchType, searchParam) {
-//   //   console.log({ searchParam, searchType });
-//   await $.ajax({
-//     type: "GET",
-//     url: `${pokeapiUrl}search/${searchType}/${searchParam}`,
-//     success: (data) => {
-//       //   console.log(data);
-//       pokemonSearchList = data.map((pokemon) => {
-//         return pokemon.id;
-//       });
-//       loadPokemonCards(pokemonSearchList);
-//     },
-//   });
-// }
 
 function searchPokemonByName(keypress) {
   if (keypress.keyCode == 13) {
