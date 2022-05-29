@@ -1,6 +1,5 @@
 const pokeapiUrl = "https://pokeapi.co/api/v2/";
 const pokemonCardsActive = {};
-const time = new Date();
 
 function createShuffledListOfPairs(numOfPokemon, gridsize) {
   let arr = [];
@@ -96,19 +95,19 @@ function game() {
     if (
       $(`#${firstCard.id}`).attr("src") == $(`#${secondCard.id}`).attr("src")
     ) {
-      console.log("Match!");
+      // console.log("Match!");
       matches++;
       $("#matches-display").text(matches);
       pokemonCardsActive[firstCard.id] = false;
       pokemonCardsActive[secondCard.id] = false;
     } else {
-      console.log("Not a match!");
+      // console.log("Not a match!");
       pokemonCardsActive[firstCard.id] = true;
       pokemonCardsActive[secondCard.id] = true;
       setTimeout(() => {
         $(`#${firstCard.id}`).parent().removeClass("flip");
         $(`#${secondCard.id}`).parent().removeClass("flip");
-      }, 500);
+      }, 300);
     }
   }
   if (matches == 3) {
@@ -123,21 +122,7 @@ function game() {
     for (const [key, value] of Object.entries(pokemonCardsActive)) {
       if (value) $(`#${key}`).parent().on("click", game);
     }
-  }, 501);
-}
-
-function logEvent(text) {
-  $.ajax({
-    url: `/timeline/insert`,
-    type: "POST",
-    data: {
-      text: text,
-      time: time.toLocaleTimeString(),
-    },
-    success: () => {
-      // console.log(`Added to timeline: ${text}`);
-    },
-  });
+  }, 301);
 }
 
 function disableGameSettings() {

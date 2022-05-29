@@ -17,9 +17,9 @@ function loadDropdowns() {
     });
 
     $(`#pokemon_${searchType}`)
-      .change(async function () {
+      .change(function () {
         let searchValue = $(`#pokemon_${searchType} option:selected`).text();
-        await searchEvent(searchType, searchValue);
+        logEvent(`Searched for ${searchType}:${searchValue}`);
       })
       .change(function () {
         searchPokemons(this.value);
@@ -66,28 +66,18 @@ function randomIntegersArray(number) {
   return randomArr;
 }
 
-// timeline event functions
-
 async function addToCart(name, base_xp) {
   await $.ajax({
     url: `/cart/add/${name}/${base_xp}`,
     type: "GET",
-    success: (res) => {},
+    success: (res) => {
+      logEvent(`${name} added to cart`);
+    },
   });
 }
 
 function profileViewed(pokemonName) {
-  $.ajax({
-    url: `/timeline/insert`,
-    type: "POST",
-    data: {
-      text: `${pokemonName} profile viewed`,
-      time: time.toLocaleTimeString(),
-    },
-    success: () => {
-      loadEvents();
-    },
-  });
+  logEvent(`${pokemonName} profile viewed`);
 }
 
 async function setup() {

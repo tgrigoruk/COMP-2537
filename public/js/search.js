@@ -1,5 +1,3 @@
-var time = new Date();
-
 pokemonSearchList = [];
 async function searchPokemons(searchUrl) {
   await $.ajax({

@@ -42,20 +42,6 @@ function searchEvent(searchType, searchValue) {
   });
 }
 
-function profileViewed(pokemonName) {
-  $.ajax({
-    url: `/timeline/insert`,
-    type: "POST",
-    data: {
-      text: `${pokemonName} profile viewed`,
-      time: time.toLocaleTimeString(),
-    },
-    success: () => {
-      loadEvents();
-    },
-  });
-}
-
 function likeEvent(id) {
   $.ajax({
     url: `/timeline/like/${id}`,

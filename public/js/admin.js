@@ -52,6 +52,7 @@ function editUser(id) {
       },
     });
   }
+  logEvent(`Edited user: ${id}`);
 }
 
 function deleteUser(id) {
@@ -62,7 +63,9 @@ function deleteUser(id) {
       if (data.deletedCount) $(`#${id}`).remove();
     },
   });
+  logEvent(`Deleted user: ${id}`);
 }
+
 function setup() {
   loadUsers();
 }

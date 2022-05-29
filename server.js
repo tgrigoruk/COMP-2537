@@ -71,7 +71,7 @@ app.get("/", function (req, res) {
   res.render("main");
 });
 
-app.get("/game", auth, function (req, res) {
+app.get("/game", function (req, res) {
   res.render("game");
 });
 
