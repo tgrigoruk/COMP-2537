@@ -23,7 +23,7 @@ main {
 }
 
 #cart-container {
-  height: 75%;
+  height: clamp(250px, 75%, 450px);
   width: clamp(350px, 80%, 600px);
   /* display: flex; */
   border-radius: 15px;

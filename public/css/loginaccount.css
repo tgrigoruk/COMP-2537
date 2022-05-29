@@ -12,6 +12,11 @@ main {
 
 #home {
   margin: 20px;
+  width: fit-content;
+  /* background-color: hsl(0, 0%, 98%);
+  border: solid 2px gray;
+  border-radius: 12px;
+  padding: 0.25em; */
 }
 
 form {

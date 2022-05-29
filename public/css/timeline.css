@@ -42,7 +42,16 @@ main {
 
 .event-hit-counter,
 .event-time {
-  color: rgb(60, 60, 199);
+  color: hsl(240, 55%, 51%);
+}
+
+.event-hit-counter {
+  display: inline-block;
+  background-color: hsl(240, 75%, 97%);
+  border-radius: 1em;
+  width: 1.5em;
+  padding: 0.25em;
+  text-align: center;
 }
 
 #no-events {
