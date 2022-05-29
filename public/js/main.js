@@ -66,8 +66,28 @@ function randomIntegersArray(number) {
   return randomArr;
 }
 
-function showHistory() {
-  // show/hide the history panel
+// timeline event functions
+
+async function addToCart(name, base_xp) {
+  await $.ajax({
+    url: `/cart/add/${name}/${base_xp}`,
+    type: "GET",
+    success: (res) => {},
+  });
+}
+
+function profileViewed(pokemonName) {
+  $.ajax({
+    url: `/timeline/insert`,
+    type: "POST",
+    data: {
+      text: `${pokemonName} profile viewed`,
+      time: time.toLocaleTimeString(),
+    },
+    success: () => {
+      loadEvents();
+    },
+  });
 }
 
 async function setup() {

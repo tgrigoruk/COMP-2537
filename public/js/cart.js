@@ -4,6 +4,7 @@ async function loadCartItems() {
     url: "/cart/getCart",
     type: "GET",
     success: (cart) => {
+      console.log({ cart });
       if (cart.length) {
         for (i = 0; i < cart.length; i++) {
           if (cart[i].quantity < 1) continue;
