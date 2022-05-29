@@ -19,7 +19,6 @@ function loadDropdowns() {
     $(`#pokemon_${searchType}`)
       .change(async function () {
         let searchValue = $(`#pokemon_${searchType} option:selected`).text();
-        console.log({ searchValue });
         await searchEvent(searchType, searchValue);
       })
       .change(function () {
@@ -30,7 +29,6 @@ function loadDropdowns() {
 
 let pokemonCardsGrid = "";
 function makePokemonCard(pokemon) {
-  // console.log(pokemon.name);
   pokemonName = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
   return `
     <div class="pokemon_card">
@@ -47,7 +45,6 @@ function makePokemonCard(pokemon) {
     </div>`;
 }
 async function loadPokemonCards(pokemonIdList) {
-  // console.log(pokemonIdList);
   pokemonCardsGrid = "";
   for (i = 0; i < 9; i++) {
     await $.ajax({

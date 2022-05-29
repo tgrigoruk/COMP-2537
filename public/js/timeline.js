@@ -4,7 +4,6 @@ function loadEvents() {
     url: "/timeline/getAllEvents",
     type: "get",
     success: (allEvents) => {
-      // console.log(allEvents);
       if (allEvents.length) {
         for (i = 0; i < allEvents.length; i++) {
           let id = allEvents[i]["_id"];

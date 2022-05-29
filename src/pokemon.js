@@ -11,7 +11,6 @@ router.get("/profile/:id", function (req, res) {
       data += chunk;
     });
     https_res.on("end", function () {
-      // console.log("view profile for " + JSON.parse(data).name);
       res.render("profile.ejs", extractPokemonData(data));
     });
   });

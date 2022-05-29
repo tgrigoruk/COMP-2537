@@ -27,7 +27,6 @@ function auth(req, res, next) {
 }
 
 router.get("/", auth, function (req, res) {
-  console.log("goto main page");
   res.send(`Hello ${req.session.user}!`);
 });
 

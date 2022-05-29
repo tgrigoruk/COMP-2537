@@ -60,7 +60,6 @@ router.post("/insert", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        // console.log("Inserted: \n" + data);
         res.send("Inserted");
       }
     }
@@ -81,7 +80,6 @@ router.get("/like/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        // console.log("Liked: \n" + JSON.stringify(data));
         res.send("Liked");
       }
     }
@@ -99,7 +97,6 @@ router.get("/remove/:id", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        // console.log("Deleted: \n" + JSON.stringify(data));
       }
       res.send("Removed");
     }
@@ -116,7 +113,6 @@ router.get("/removeAll", function (req, res) {
       if (err) {
         console.log("Error " + err);
       } else {
-        // console.log("Deleted all");
         res.send("Deleted all!");
       }
     }

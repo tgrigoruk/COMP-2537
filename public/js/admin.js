@@ -4,7 +4,6 @@ function loadUsers() {
     url: "/getAllUsers",
     type: "get",
     success: (data) => {
-      console.log(data);
       const { currentUser, userList } = data;
       if (userList.length) {
         for (i = 0; i < userList.length; i++) {
@@ -14,9 +13,9 @@ function loadUsers() {
           $("#user-list").append(
             `
             <div class="user ${isAdmin} row-${parity}" id="${id}"> 
-              <span class="username">${userList[i].username}</span>
-              <span class="username">${userList[i].email}</span>
-              <span class="username">${userList[i].added}</span>
+              <p class="username">${userList[i].username}</p>
+              <p class="username">${userList[i].email}</p>
+              <p class="username">${userList[i].added}</p>
               <button class="edit-user" onclick="editUser('${id}')">✏️</button>
               <button class="delete-user"  onclick="deleteUser('${id}')">🗑</button>
             </div>
@@ -43,7 +42,6 @@ function editUser(id) {
       url: `/getUser/${id}`,
       type: "GET",
       success: (user) => {
-        // console.log(user);
         $("#username").val(user.username);
         $("#email").val(user.email);
         $("#password").val(user.password);

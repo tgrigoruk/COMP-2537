@@ -75,7 +75,7 @@ async function incrementItemQuantity(username, itemName, amount) {
       }
     )
     .then(function (doc) {
-      // log(doc);
+      // console.log(doc);
     })
     .catch(function (err) {
       printError(err);
@@ -91,7 +91,7 @@ function addNewItemToCart(username, itemName, itemPrice) {
       if (err) {
         printError(err);
       } else {
-        // log({ updateResult })
+        // console.log({ updateResult })
       }
     }
   );
@@ -106,7 +106,6 @@ function removeItemFromCart(username, itemName) {
       if (err) {
         console.log("Error " + err);
       } else {
-        // console.log("Deleted: \n" + JSON.stringify(data));
         // res.send({ quantity: 0 });
       }
     }
@@ -182,7 +181,6 @@ router.post("/checkout", async function (req, res) {
     .findOne({ username: username })
     .then(function (data) {
       const order = { time: time, total: total, items: data.cart };
-      // log(order);
       cartModel.updateOne(
         { username: username },
         { $push: { orderHistory: order } },
@@ -213,9 +211,6 @@ router.get("/orderHistory", async function (req, res) {
 
 //-------------------- HELPER FUNCTIONS --------------------//
 
-function log(e) {
-  console.log(e);
-}
 function printError(err) {
   console.log(`Error: ${err}`);
 }

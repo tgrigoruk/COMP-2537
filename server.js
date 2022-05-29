@@ -133,7 +133,6 @@ app.post("/register", function (req, res) {
       printError(err);
     } else {
       if (result.length) {
-        // console.log("User already exists");
         res.render("newaccount", {
           email: email,
           message: "That username already exists!",
@@ -167,43 +166,39 @@ function addNewUserToDB(username, email, password, admin = false) {
   );
 }
 
-// add middleware: auth, admin,
-app.get("/admin", function (req, res) {
+app.get("/admin", auth, admin, function (req, res) {
   // userModel.find().then((users) => {
   res.render("admin", { message: "" });
   // });
 });
 
-app.get("/getUser/:id", function (req, res) {
+app.get("/getUser/:id", auth, admin, function (req, res) {
   userModel.find({ _id: req.params.id }).then((users) => {
     res.send(users[0]);
   });
 });
 
-app.get("/getAllUsers", function (req, res) {
+app.get("/getAllUsers", auth, admin, function (req, res) {
   userModel.find().then((users) => {
     res.send({ currentUser: req.session.username, userList: users });
   });
 });
 
-app.get("/deleteUser/:id", function (req, res) {
+app.get("/deleteUser/:id", auth, admin, function (req, res) {
   userModel.deleteOne({ _id: req.params.id }).then((data) => {
     res.send(data);
   });
 });
 
-app.post("/updateDatabase", function (req, res) {
+app.post("/updateDatabase", auth, admin, function (req, res) {
   const { username, email, password, addOrUpdate, admin } = req.body;
   let isAdmin = admin ? true : false;
-  console.log(req.body);
-
   if (addOrUpdate == "add") {
     userModel.find({ username: username }, function (err, result) {
       if (err) {
         printError(err);
       } else {
         if (result.length) {
-          // console.log("User already exists");
           res.render("admin", {
             message: "User already exists!",
           });

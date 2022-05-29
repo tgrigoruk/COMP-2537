@@ -4,7 +4,6 @@ function loadOrders() {
     url: "/cart/orderHistory",
     type: "get",
     success: (orders) => {
-      //   console.log({ cart });
       if (orders.length) {
         // currency code from https://flaviocopes.com/how-to-format-number-as-currency-javascript/
         const formatter = new Intl.NumberFormat("en-US", {

@@ -15,7 +15,6 @@ async function searchPokemons(searchUrl) {
           return pokemon.pokemon.name;
         });
       }
-      console.log({ pokemonSearchList });
       loadPokemonCards(pokemonSearchList);
     },
   });
@@ -35,7 +34,6 @@ function searchPokemonByName(keypress) {
           alert("A pokemon by that name does not exist.");
         },
         success: async (data) => {
-          console.log({ data });
           if (data.id) {
             await addNameToTimeline(pokemonNameTitleCase);
             window.location.href = `/pokemon/profile/${data.id}`;

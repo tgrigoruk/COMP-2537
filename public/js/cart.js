@@ -4,7 +4,6 @@ async function loadCartItems() {
     url: "/cart/getCart",
     type: "GET",
     success: (cart) => {
-      // console.log({ cart });
       if (cart.length) {
         for (i = 0; i < cart.length; i++) {
           if (cart[i].quantity < 1) continue;
@@ -42,9 +41,7 @@ async function addToCart(name, base_xp) {
   await $.ajax({
     url: `/cart/add/${name}/${base_xp}`,
     type: "GET",
-    success: (res) => {
-      // console.log({ res });
-    },
+    success: (res) => {},
   });
   createTotals();
 }
@@ -68,12 +65,10 @@ async function changeQuantity(name, amount) {
 }
 
 async function emptyCart() {
-  // empty entire cart
   await $.ajax({
     url: `/cart/empty`,
     type: "GET",
     success: (res) => {
-      // console.log({ res });
       $("#cart-items").empty();
       $("#cart-items").append(`<p id="cart-empty">Cart is currently empty</p>`);
     },

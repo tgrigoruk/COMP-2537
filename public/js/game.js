@@ -23,12 +23,6 @@ async function createBoard() {
   const numOfPokemon = parseInt($("#game-pokemons").val());
   const timelimit = $("#game-difficulty").val();
   displayTime(timelimit);
-  // console.log({
-  //   rows: rows,
-  //   cols: cols,
-  //   pokemon: numOfPokemon,
-  //   difficulty: difficulty,
-  // });
 
   $("#game-grid").empty();
   let pokemonList = createShuffledListOfPairs(numOfPokemon, rows * cols);
@@ -124,7 +118,6 @@ function game() {
     logEvent(`Won a ${$("#game-difficulty option:selected").text()} game`);
   }
 
-  console.log({ pokemonCardsActive });
   //re-enable cards still in play after a cool-down period
   setTimeout(() => {
     for (const [key, value] of Object.entries(pokemonCardsActive)) {
@@ -142,7 +135,7 @@ function logEvent(text) {
       time: time.toLocaleTimeString(),
     },
     success: () => {
-      console.log(`Added to timeline: ${text}`);
+      // console.log(`Added to timeline: ${text}`);
     },
   });
 }
