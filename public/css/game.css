@@ -47,10 +47,11 @@ label {
 /********** GAME BOARD **********/
 
 #game-grid {
+    /* height: 75vw; */
     margin: 4vw;
     display: grid;
     border: 4px solid rgb(229, 70, 70);
-    background-color: rgba(255, 255, 255, 0.499);
+    background-color: rgba(255, 255, 255, 0.75);
     border-radius: 12px;
     perspective: 1000px;
 }
