@@ -165,7 +165,12 @@ router.get("/getCart", function (req, res) {
     if (err) {
       printError(err);
     } else {
-      if (data) res.send(data.cart);
+      // res.send(data.cart);
+      if (data) {
+        res.send(data.cart);
+      } else {
+        res.send([]);
+      }
     }
   });
 });
@@ -198,7 +203,11 @@ router.get("/orderHistory", async function (req, res) {
   const histroy = await cartModel
     .findOne({ username: username })
     .then(function (data) {
-      if (data) res.send(data.orderHistory);
+      if (data) {
+        res.send(data.orderHistory);
+      } else {
+        res.send([]);
+      }
     });
 });
 

@@ -4,9 +4,7 @@ function loadUsers() {
     url: "/getAllUsers",
     type: "get",
     success: (userList) => {
-      if (userList.length == 0) {
-        $("#user-list").append(`<p id="no-users">No users<p>`);
-      } else {
+      if (userList.length) {
         for (i = 0; i < userList.length; i++) {
           parity = i % 2 ? "odd" : "even";
           let id = userList[i]["_id"];
@@ -25,6 +23,8 @@ function loadUsers() {
             $(`#${id} .delete-user`).prop("disabled", true);
           }
         }
+      } else {
+        $("#user-list").append(`<p class="empty-message">No users<p>`);
       }
     },
   });
@@ -43,7 +43,6 @@ function editUser(id) {
         $("#username").val(user.username);
         $("#email").val(user.email);
         $("#password").val(user.password);
-        // $("#update-user-form").attr("action", `/updateUser/${id}`);
         $(".user").removeClass("selected-row");
         $(`#${id}`).addClass("selected-row");
         $("#update-user").prop("disabled", false);

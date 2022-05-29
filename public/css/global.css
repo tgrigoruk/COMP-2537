@@ -95,6 +95,10 @@ footer {
   font-weight: 100;
 }
 
+.empty-message {
+  margin: 1em;
+}
+
 @media screen and (max-width: 460px) {
 
   nav,

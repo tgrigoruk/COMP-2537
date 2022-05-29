@@ -5,9 +5,7 @@ function loadEvents() {
     type: "get",
     success: (allEvents) => {
       // console.log(allEvents);
-      if (allEvents.length == 0) {
-        $("#events").append(`<p id="no-events">No events in history<p>`);
-      } else {
+      if (allEvents.length) {
         for (i = 0; i < allEvents.length; i++) {
           let id = allEvents[i]["_id"];
           $("#events").prepend(
@@ -22,6 +20,8 @@ function loadEvents() {
             `
           );
         }
+      } else {
+        $("#events").append(`<p class="empty-message">No events in history<p>`);
       }
     },
   });

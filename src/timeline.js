@@ -40,8 +40,9 @@ router.get("/getAllEvents", function (req, res) {
       console.log("Error " + err);
     } else {
       if (data.length) {
-        // console.log(data)
         res.send(data[0].events);
+      } else {
+        res.send([]);
       }
     }
   });
