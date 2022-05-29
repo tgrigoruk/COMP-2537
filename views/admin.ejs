@@ -25,75 +25,81 @@
     <header><%- include('partials/header.ejs') %></header>
     <main>
       <h2>Admin Page – Add/Update Users</h2>
-      <form id="new-user-form">
-        <form id="update-user-form" action="/updateDatabase" method="POST">
-          <!-- <p id="errorMessage"></p> -->
-          <div id="text-inputs">
-            <label for="username">
-              username
-              <input
-                type="text"
-                placeholder="Username"
-                id="username"
-                name="username"
-                required
-              />
-            </label>
-            <label for="email">
-              email
-              <input
-                type="text"
-                placeholder="Email"
-                id="email"
-                name="email"
-                required
-              />
-            </label>
-            <label for="password">
-              password
-
-              <input
-                type="text"
-                placeholder="Password"
-                name="password"
-                id="password"
-                required
-              />
-            </label>
-          </div>
-          <label for="add-user">
+      <form id="update-user-form" action="/updateDatabase" method="POST">
+        <p class="errorMessage"><%= message %></p>
+        <div id="text-inputs">
+          <label for="username">
+            username
             <input
-              type="radio"
-              name="addOrUpdate"
-              id="add-user"
-              value="add"
-              checked
+              type="text"
+              placeholder="Username"
+              id="username"
+              name="username"
+              required
             />
-            add new user
           </label>
-
-          <label for="update-user">
+          <label for="email">
+            email
             <input
-              type="radio"
-              name="addOrUpdate"
-              id="update-user"
-              value="update"
+              type="text"
+              placeholder="Email"
+              id="email"
+              name="email"
+              required
             />
-            update selected user</label
-          >
+          </label>
+          <label for="password">
+            password
+
+            <input
+              type="text"
+              placeholder="Password"
+              name="password"
+              id="password"
+              required
+            />
+          </label>
+        </div>
+        <label for="add-user">
           <input
-            id="update-database-button"
-            type="submit"
-            value="update database"
+            type="radio"
+            name="addOrUpdate"
+            id="add-user"
+            value="add"
+            checked
           />
-        </form>
+          create a new user
+        </label>
+
+        <label for="update-user">
+          <input
+            type="radio"
+            name="addOrUpdate"
+            id="update-user"
+            value="update"
+            disabled
+          />
+          update selected user</label
+        >
+
+        <label for="admin">
+          <input type="checkbox" name="admin" id="admin" />
+          make admin</label
+        >
+
+        <input
+          id="update-database-button"
+          type="submit"
+          value="update database"
+        />
       </form>
+
       <div id="user-list-container">
         <div id="user-list-header">
           <h3>Username</h3>
           <h3>Email</h3>
           <h3>Added</h3>
-          <h3>Manage</h3>
+          <h3>Edit/Delete</h3>
         </div>
         <div id="user-list"></div>
       </div>

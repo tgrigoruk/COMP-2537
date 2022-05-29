@@ -3,14 +3,17 @@ function loadUsers() {
   $.ajax({
     url: "/getAllUsers",
     type: "get",
-    success: (userList) => {
+    success: (data) => {
+      console.log(data);
+      const { currentUser, userList } = data;
       if (userList.length) {
         for (i = 0; i < userList.length; i++) {
+          let isAdmin = userList[i].admin ? "isAdmin" : "";
           parity = i % 2 ? "odd" : "even";
           let id = userList[i]["_id"];
           $("#user-list").append(
             `
-            <div class="user row-${parity}" id="${id}"> 
+            <div class="user ${isAdmin} row-${parity}" id="${id}"> 
               <span class="username">${userList[i].username}</span>
               <span class="username">${userList[i].email}</span>
               <span class="username">${userList[i].added}</span>
@@ -19,7 +22,8 @@ function loadUsers() {
             </div>
             `
           );
-          if (userList[i].admin) {
+          if (userList[i].username == currentUser) {
+            $(`#${id} .edit-user`).prop("disabled", true);
             $(`#${id} .delete-user`).prop("disabled", true);
           }
         }
@@ -56,8 +60,8 @@ function deleteUser(id) {
   $.ajax({
     url: `/deleteUser/${id}`,
     type: "GET",
-    success: () => {
-      $(`#${id}`).remove();
+    success: (data) => {
+      if (data.deletedCount) $(`#${id}`).remove();
     },
   });
 }
