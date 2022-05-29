@@ -14,10 +14,6 @@ main {
   margin: 20px;
 }
 
-#errorMessage {
-  text-align: center;
-}
-
 form {
   display: flex;
   flex-direction: column;

@@ -95,6 +95,13 @@ footer {
   font-weight: 100;
 }
 
+.errorMessage {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+}
+
 .empty-message {
   margin: 1em;
 }
