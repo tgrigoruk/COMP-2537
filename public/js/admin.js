@@ -4,7 +4,6 @@ function loadUsers() {
     url: "/getAllUsers",
     type: "get",
     success: (userList) => {
-      console.log(userList);
       if (userList.length == 0) {
         $("#user-list").append(`<p id="no-users">No users<p>`);
       } else {
@@ -17,17 +16,42 @@ function loadUsers() {
               <span class="username">${userList[i].username}</span>
               <span class="username">${userList[i].email}</span>
               <span class="username">${userList[i].added}</span>
-              <button class="edit-button" onclick="">edit</button>
-              <button class="delete-button"  onclick="">delete</button>
+              <button class="edit-user" onclick="editUser('${id}')">✏️</button>
+              <button class="delete-user"  onclick="deleteUser('${id}')">🗑</button>
             </div>
             `
           );
+          if (userList[i].admin) {
+            $(`#${id} .delete-user`).prop("disabled", true);
+          }
         }
       }
     },
   });
 }
+function editUser(id) {
+  $.ajax({
+    url: `/getUser/${id}`,
+    type: "GET",
+    success: (user) => {
+      console.log(user);
+      $("#username").val(user.username);
+      $("#email").val(user.email);
+      $("#password").val(user.password);
+      $("#update-user-form").attr("action", `/updateUser/${id}`);
+    },
+  });
+}
 
+function deleteUser(id) {
+  $.ajax({
+    url: `/deleteUser/${id}`,
+    type: "GET",
+    success: () => {
+      $(`#${id}`).remove();
+    },
+  });
+}
 function setup() {
   loadUsers();
 }

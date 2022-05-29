@@ -12,6 +12,7 @@ app.use(
     secret: "Wf6hKgRx7kJ&g*ebC98A",
     saveUninitialized: true,
     resave: true,
+    admin: false,
   })
 );
 app.use(
@@ -70,7 +71,7 @@ app.get("/", function (req, res) {
   res.render("main");
 });
 
-app.get("/game", function (req, res) {
+app.get("/game", auth, function (req, res) {
   res.render("game");
 });
 
@@ -89,7 +90,14 @@ app.post("/login", function (req, res) {
       if (result.length) {
         req.session.authenticated = true;
         req.session.username = username;
-        res.redirect("/account");
+        req.session.id = result[0]._id;
+        if (result[0].admin) {
+          req.session.admin = true;
+          res.redirect("/admin");
+        } else {
+          req.session.admin = false;
+          res.redirect("/account");
+        }
       } else {
         req.session.authenticated = false;
         res.render("login", {
@@ -138,12 +146,13 @@ app.post("/register", function (req, res) {
   });
 });
 function addNewUserToDB(username, email, password, req, res) {
+  var time = new Date();
   userModel.create(
     {
       username: username,
       email: email,
       password: password,
-      added: "2022-05-20",
+      added: time.toLocaleDateString(),
     },
     function (err, data) {
       if (err) {
@@ -165,8 +174,20 @@ app.get("/admin", function (req, res) {
   // });
 });
 
+app.get("/getUser/:id", function (req, res) {
+  userModel.find({ _id: req.params.id }).then((users) => {
+    res.send(users[0]);
+  });
+});
+
 app.get("/getAllUsers", function (req, res) {
   userModel.find().then((users) => {
     res.send(users);
+  });
+});
+
+app.get("/deleteUser/:id", function (req, res) {
+  userModel.deleteOne({ _id: req.params.id }).then((data) => {
+    res.send("Deleted");
   });
 });
