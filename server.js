@@ -13,6 +13,7 @@ app.use(
     saveUninitialized: true,
     resave: true,
     admin: false,
+    cookie: { sameSite: "strict" },
   })
 );
 app.use(
