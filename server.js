@@ -29,10 +29,8 @@ const timeline = require("./src/timeline");
 const cart = require("./src/cart");
 
 //-------------------- MONGOOSE SETUP --------------------//
-
-const mongoUri = process.env.MONGODB_URI;
 const mongoose = require("mongoose");
-mongoose.connect(mongoUri, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -46,6 +44,7 @@ const userSchema = new mongoose.Schema({
 });
 const userModel = mongoose.model("users", userSchema);
 
+//-------------------- MIDDLEWARES --------------------//
 function auth(req, res, next) {
   req.session.authenticated ? next() : res.redirect("/login");
 }
@@ -64,6 +63,7 @@ app.use("/cart", auth, cart);
 app.listen(process.env.PORT || 5001, function (err) {
   if (err) printError(err);
 });
+// module.exports = app;
 
 //-------------------- USER ACCOUNT ROUTES --------------------//
 
