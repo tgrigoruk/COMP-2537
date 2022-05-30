@@ -145,6 +145,9 @@ function displayTime(time) {
 
 function setup() {
   createBoard();
+  $("#game-difficulty").on("change", function () {
+    displayTime(this.value);
+  });
   $("#game-dims").on("change", createBoard);
   $("#game-pokemons").on("change", createBoard);
 }
