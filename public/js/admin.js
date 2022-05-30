@@ -45,14 +45,15 @@ function editUser(id) {
         $("#username").val(user.username);
         $("#email").val(user.email);
         $("#password").val(user.password);
+        $("#admin").prop("checked", user.admin);
         $(".user").removeClass("selected-row");
         $(`#${id}`).addClass("selected-row");
         $("#update-user").prop("disabled", false);
         $("#update-user").prop("checked", true);
+        logEvent(`Edited user: ${user.username}`);
       },
     });
   }
-  logEvent(`Edited user: ${id}`);
 }
 
 function deleteUser(id) {
