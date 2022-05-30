@@ -15,12 +15,13 @@ function createShuffledListOfPairs(numOfPokemon, gridsize) {
   }
   return arr;
 }
-
+let matchesToWin;
 async function createBoard() {
   const rows = parseInt($("#game-dims").val());
   const cols = rows == 6 ? 6 : 4;
   const numOfPokemon = parseInt($("#game-pokemons").val());
   const timelimit = $("#game-difficulty").val();
+  matchesToWin = (rows * cols) / 2;
   displayTime(timelimit);
 
   $("#game-grid").empty();
@@ -97,7 +98,7 @@ function game() {
     ) {
       // console.log("Match!");
       matches++;
-      $("#matches-display").text(matches);
+      $("#matches-display").text(`${matches} of ${matchesToWin}`);
       pokemonCardsActive[firstCard.id] = false;
       pokemonCardsActive[secondCard.id] = false;
     } else {
@@ -110,7 +111,7 @@ function game() {
       }, 300);
     }
   }
-  if (matches == 3) {
+  if (matches == matchesToWin) {
     clearInterval(gameTimer);
     deactivateAllCards();
     $("#win-text").text("Congrats, you won!");
@@ -145,6 +146,7 @@ function displayTime(time) {
 
 function setup() {
   createBoard();
+  $("#matches-display").text(`${matches} of ${matchesToWin}`);
   $("#game-difficulty").on("change", function () {
     displayTime(this.value);
   });
